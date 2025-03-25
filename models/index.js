@@ -43,18 +43,20 @@ export const Quote = sequelize.define('quote', {
 }, { tableName: 'quotes' });
 
 // Associations
-SurveyorService.belongsTo(Surveyor, {
-    foreignKey: 'surveyorId',
-    as: 'Surveyor'
-  });  
-SurveyorService.belongsTo(SurveyType, { foreignKey: 'surveyTypeId' });
-SurveyorService.belongsTo(LocationBasket, { foreignKey: 'locationBasketId' });
-SurveyorService.hasMany(Quote, { foreignKey: 'surveyorServiceId' });
+
+SurveyorService.belongsTo(SurveyType, { foreignKey: 'surveyTypeId', as: 'survey_type' });
+SurveyorService.belongsTo(LocationBasket, { foreignKey: 'locationBasketId', as: 'location_basket' });
+SurveyorService.belongsTo(Surveyor, { foreignKey: 'surveyorId', as: 'surveyor' });
+SurveyorService.hasMany(Quote, { foreignKey: 'surveyorServiceId', as: 'quotes' });
 
 Quote.belongsTo(SurveyorService, { foreignKey: 'surveyorServiceId' });
 
+
+  
+
 LocationBasket.belongsTo(Surveyor, { foreignKey: 'surveyorId' });
-LocationBasket.belongsToMany(Location, { through: 'location_basket_locations' });
-Location.belongsToMany(LocationBasket, { through: 'location_basket_locations' });
+LocationBasket.belongsToMany(Location, { through: 'location_basket_locations', timestamps: false });
+Location.belongsToMany(LocationBasket, { through: 'location_basket_locations', timestamps: false });
+
 
 export default sequelize;

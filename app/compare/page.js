@@ -76,8 +76,8 @@ export default function Compare() {
             const result = await response.json();
             setSearchResults(result.services);
     
-            // Optionally scroll to results
-            // window.scrollTo(0, document.getElementById('search-results').offsetTop);
+            // Scroll to results
+            window.scrollTo(0, document.getElementById('search-results').offsetTop);
     
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -124,7 +124,7 @@ export default function Compare() {
                                                         onChange={handleInputChange}
                                                         className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                                     >
-                                                        <option value="" disabled selected>Select a service...</option>
+                                                        <option value="" disabled>Select a service...</option>
                                                         {surveyTypes.map((type) => (
                                                             <option key={type.id} value={type.name}>
                                                                 {type.name}
