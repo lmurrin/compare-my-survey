@@ -2,13 +2,15 @@ import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { QueryTypes } from 'sequelize';
 
-export async function GET(request, context) {
+export async function GET(req, { params }) {
   try {
-    const surveyorId = (await context).params?.['surveyor-id'];
+    
+    const surveyorId = params.surveyorId
 
     if (!surveyorId) {
       return NextResponse.json({ error: 'Missing surveyorId' }, { status: 400 });
     }
+
 
     const rawResults = await db.query(
       `SELECT 
@@ -16,6 +18,7 @@ export async function GET(request, context) {
           ss.surveyorId,
           ss.surveyTypeId,
           ss.locationBasketId,
+          ss.active,
           st.name AS surveyType, 
           lb.name AS locationBasket,
           l.id AS locationId,
@@ -57,6 +60,7 @@ export async function GET(request, context) {
           id: row.serviceId,
           surveyorId: row.surveyorId,
           surveyTypeId: row.surveyTypeId,
+          active: row.active,
           locationBasketId: row.locationBasketId,
           surveyType: row.surveyType,
           locationBasket: row.locationBasket,

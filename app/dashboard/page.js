@@ -23,7 +23,7 @@ export default function DashboardHome() {
       <div>
 
         <DashboardHeading
-          title={session?.isAdmin ? `Welcome to the admin dashboard` : `Welcome to the dashboard, ${session?.companyName}`}
+          title={session?.isAdmin ? `Welcome to the admin dashboard` : `Welcome, ${session?.companyName}`}
           showEditButton={false}
           showPublishButton={false}
         />

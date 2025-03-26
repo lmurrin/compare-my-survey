@@ -22,7 +22,9 @@ import {
   HomeIcon,
   UsersIcon,
   XMarkIcon,
-  MapIcon
+  MapIcon,
+  UserCircleIcon,
+  CurrencyPoundIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { SessionProvider, useSession, signOut } from 'next-auth/react';
@@ -52,34 +54,41 @@ function classNames(...classes) {
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { data: session } = useSession();
-  const [navigation, setNavigation] = useState([
+  const baseNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+    { name: 'My Services', href: '/dashboard/services', icon: DocumentDuplicateIcon },
+    { name: 'Profile', href: '/dashboard/profile', icon: UserCircleIcon },
+    { name: 'Billing', href: '/dashboard/billing', icon: CurrencyPoundIcon },
+  ];
+  
+  const adminNavigation = [
     { name: 'Survey Types', href: '/dashboard/survey-types', icon: FolderIcon },
     { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },
-    { name: 'Documents', href: '/dashboard/documents', icon: DocumentDuplicateIcon },
     { name: 'Reports', href: '/dashboard/reports', icon: ChartPieIcon },
-  ]);
-
-  // Add links to menu that are only visible to admin users
+  ];
+  
+  const [navigation, setNavigation] = useState(baseNavigation);
+  
+  // Update navigation based on user role
   useEffect(() => {
-    // If session is available and the user is an admin
     if (session?.isAdmin) {
-      // Check if 'Surveyors' is already present
-      if (!navigation.some(item => item.name === 'Surveyors')) {
-        // Create a copy of the navigation array
-        const updatedNavigation = [...navigation];
-        // Insert 'Surveyors' at position 2 (index 1)
+      let updatedNavigation = [...baseNavigation];
+  
+      // Insert admin-only links
+      updatedNavigation.splice(1, 0, ...adminNavigation);
+  
+      // Add Surveyors link if not already present
+      if (!updatedNavigation.some(item => item.name === 'Surveyors')) {
         updatedNavigation.splice(1, 0, {
           name: 'Surveyors',
           href: '/dashboard/surveyors',
           icon: UsersIcon,
         });
-
-        // Update the navigation state
-        setNavigation(updatedNavigation);
       }
+  
+      setNavigation(updatedNavigation);
     }
-  }, [session, navigation]);
+  }, [session]);
 
   return (
     <>

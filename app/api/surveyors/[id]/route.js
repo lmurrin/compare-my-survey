@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { QueryTypes } from 'sequelize';
+import Surveyor from '@/models/Surveyor';
 
 export async function GET(req, context) {
   try {
@@ -27,22 +28,24 @@ export async function GET(req, context) {
 
 
 export async function PUT(req, { params }) {
-  try {
-    const { id } = params;
-    const { name, email, phone } = await req.json();
+  const { id } = params;
 
-    await db.query('UPDATE surveyors SET name=?, email=?, phone=? WHERE id=?', [
-      name,
-      email,
-      phone,
-      id,
-    ]);
+  try {
+    const { name, email, phone, address, description } = await req.json();
+
+    await Surveyor.update(
+      { name, email, phone, address, description },
+      { where: { id } }
+    );
+    
 
     return NextResponse.json({ message: 'Surveyor updated' }, { status: 200 });
   } catch (error) {
+    console.error('PUT error:', error);
     return NextResponse.json({ error: 'Error updating surveyor' }, { status: 500 });
   }
 }
+
 
 export async function DELETE(req, { params }) {
   try {

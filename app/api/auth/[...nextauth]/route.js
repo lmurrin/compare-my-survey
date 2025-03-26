@@ -25,6 +25,9 @@ const handler = NextAuth({
               email: user.email,
               companyName: user.companyName,
               isAdmin: user.isAdmin,
+              phone: user.phone,
+              address: user.address,
+              description: user.description,
             };
           }
         }
@@ -46,16 +49,24 @@ const handler = NextAuth({
         token.email = user.email;
         token.companyName = user.companyName;
         token.isAdmin = user.isAdmin;
+        token.phone = user.phone;
+        token.address = user.address;
+        token.description = user.description;
       }
       return token;
-    },
+    }
+    ,
     async session({ session, token }) {
       session.id = token.id;
       session.email = token.email;
       session.companyName = token.companyName;
       session.isAdmin = token.isAdmin;
+      session.phone = token.phone;
+      session.address = token.address;
+      session.description = token.description;
       return session;
-    },
+    }
+    ,
   },
   secret: process.env.JWT_SECRET, // Ensure you have a JWT secret
 });

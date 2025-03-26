@@ -48,7 +48,7 @@ export default function EditSurveyorServiceModal({ isOpen, onClose, serviceData 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // API call to update surveyor service
-    await fetch(`/api/surveyor-services/${serviceData.id}`, {
+    await fetch(`/api/surveyor-services/by-id/${serviceData.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -89,7 +89,7 @@ export default function EditSurveyorServiceModal({ isOpen, onClose, serviceData 
                   className="w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="">Select area...</option>
-                  {locationBaskets.map((basket) => (
+                  {(locationBaskets || []).map((basket) => (
                     <option key={basket.id} value={basket.id}>
                       {basket.name}
                     </option>
