@@ -1,18 +1,30 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
+import { QueryTypes } from 'sequelize';
 
-export async function GET(req, { params }) {
+export async function GET(req, context) {
   try {
-    const { id } = params;
-    const [surveyor] = await db.query('SELECT * FROM surveyors WHERE id = ?', [id]);
+    const { id } = await context.params; 
 
-    if (!surveyor) return NextResponse.json({ error: 'Surveyor not found' }, { status: 404 });
+    console.log("Fetching surveyor with ID:", id);
 
-    return NextResponse.json(surveyor, { status: 200 });
+    const rows = await db.query('SELECT * FROM surveyors WHERE id = ?', {
+      replacements: [id],
+      type: QueryTypes.SELECT,
+    });
+
+    if (!rows.length) {
+      return NextResponse.json({ error: 'Surveyor not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(rows[0], { status: 200 });
   } catch (error) {
+    console.error("Error in GET /api/surveyors/[id]:", error);
     return NextResponse.json({ error: 'Error fetching surveyor' }, { status: 500 });
   }
 }
+
+
 
 export async function PUT(req, { params }) {
   try {
