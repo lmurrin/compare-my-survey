@@ -57,6 +57,7 @@ export default function DashboardLayout({ children }) {
   const baseNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'My Services', href: '/dashboard/services', icon: DocumentDuplicateIcon },
+    { name: 'My Areas', href: '/dashboard/areas', icon: MapIcon },
     { name: 'Profile', href: '/dashboard/profile', icon: UserCircleIcon },
     { name: 'Billing', href: '/dashboard/billing', icon: CurrencyPoundIcon },
   ];
