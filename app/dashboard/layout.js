@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -25,15 +25,9 @@ import {
   MapIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { SessionProvider, useSession, signOut } from 'next-auth/react';
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-  { name: 'Surveyors', href: '/dashboard/surveyors', icon: UsersIcon },
-  { name: 'Survey Types', href: '/dashboard/survey-types', icon: FolderIcon },
-  { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },
-  { name: 'Documents', href: '/dashboard/documents', icon: DocumentDuplicateIcon },
-  { name: 'Reports', href: '/dashboard/reports', icon: ChartPieIcon },
-]
+
 
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H' },
@@ -43,8 +37,13 @@ const teams = [
 
 const userNavigation = [
   { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
+  { 
+    name: 'Sign out', 
+    href: '#', 
+    onClick: () => signOut() 
+  },
+];
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -52,9 +51,39 @@ function classNames(...classes) {
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { data: session } = useSession();
+  const [navigation, setNavigation] = useState([
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+    { name: 'Survey Types', href: '/dashboard/survey-types', icon: FolderIcon },
+    { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },
+    { name: 'Documents', href: '/dashboard/documents', icon: DocumentDuplicateIcon },
+    { name: 'Reports', href: '/dashboard/reports', icon: ChartPieIcon },
+  ]);
+
+  // Add links to menu that are only visible to admin users
+  useEffect(() => {
+    // If session is available and the user is an admin
+    if (session?.isAdmin) {
+      // Check if 'Surveyors' is already present
+      if (!navigation.some(item => item.name === 'Surveyors')) {
+        // Create a copy of the navigation array
+        const updatedNavigation = [...navigation];
+        // Insert 'Surveyors' at position 2 (index 1)
+        updatedNavigation.splice(1, 0, {
+          name: 'Surveyors',
+          href: '/dashboard/surveyors',
+          icon: UsersIcon,
+        });
+
+        // Update the navigation state
+        setNavigation(updatedNavigation);
+      }
+    }
+  }, [session, navigation]);
 
   return (
     <>
+    <SessionProvider>
     {/*
       This example requires updating your template:
 
@@ -223,7 +252,7 @@ export default function DashboardLayout({ children }) {
                   />
                   <span className="hidden lg:flex lg:items-center">
                     <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                      Tom Cook
+                    <SessionUserDisplay />
                     </span>
                     <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                   </span>
@@ -236,6 +265,7 @@ export default function DashboardLayout({ children }) {
                     <MenuItem key={item.name}>
                       <a
                         href={item.href}
+                        onClick={item.onClick}
                         className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
                       >
                         {item.name}
@@ -250,10 +280,23 @@ export default function DashboardLayout({ children }) {
 
             {/* Insert this where your content area goes */}
           <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+            <div className="px-4 sm:px-6 lg:px-8">
+            
+              {children}
+            
+              </div>
           </main>
         </div>
     </div>
+    </SessionProvider>
   </>
   )
+}
+
+// Custom component to display the company name after session is loaded
+function SessionUserDisplay() {
+  const { data: session } = useSession();
+
+  if (!session) return null; 
+  return <span>{session.companyName}</span>;
 }

@@ -9,6 +9,14 @@ export const Surveyor = sequelize.define('surveyor', {
   phone: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.TEXT },
   balance: { type: DataTypes.DECIMAL(10, 2), defaultValue: 0 },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 }, { tableName: 'surveyors' });
 
 export const SurveyType = sequelize.define('survey_type', {
