@@ -35,11 +35,12 @@ export default function Notication() {
                       This site is a work in progress, and some features are not
                       working yet.
                     </p>
-                    <p className="mt-1 text-sm text-gray-300">
+                    <p>
                       You can test the search feature using postcodes
-                      &quot;DA4&quot; & &quot;BR1&quot;. This will return
+                      &quot;DA4&quot; &amp; &quot;BR1&quot;. This will return
                       comparison results.
                     </p>
+
                     <p className="mt-1 text-sm text-gray-300">
                       Feel free to create an account and log in to set up your
                       fake surveying business, services, areas, and quotes.
