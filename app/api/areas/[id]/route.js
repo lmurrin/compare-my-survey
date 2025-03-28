@@ -1,62 +1,99 @@
-import { NextResponse } from 'next/server';
-import Areas from '@/models/Areas';
+import { NextResponse } from "next/server";
+import { initModels, Areas, Locations } from "@/models/initModels";
 
-// GET  area by ID
+initModels(); // ✅ Safe to run globally once at the top
+
+// GET area by ID with locations
 export async function GET(req) {
   try {
-    const id = req.nextUrl.pathname.split('/').pop(); // Extract ID from the URL
-    const area = await Areas.findByPk(id); // Use Sequelize's `findByPk` method
+    const id = req.nextUrl.pathname.split("/").pop();
+
+    const area = await Areas.findByPk(id, {
+      include: [
+        {
+          model: Locations,
+          as: "locations",
+          attributes: ["id", "name"],
+          through: { attributes: [] },
+        },
+      ],
+    });
 
     if (!area) {
-      return NextResponse.json({ error: 'Area not found' }, { status: 404 });
+      return NextResponse.json({ error: "Area not found" }, { status: 404 });
     }
 
     return NextResponse.json(area, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Error fetching Area' }, { status: 500 });
+    console.error("Error fetching area:", error);
+    return NextResponse.json({ error: "Error fetching area" }, { status: 500 });
   }
 }
 
-// UPDATE survey type (PUT)
+// PUT update area name + locations
 export async function PUT(req) {
   try {
-    const id = req.nextUrl.pathname.split('/').pop(); // Extract ID from the URL
-    const { name } = await req.json(); // Parse JSON body
+    const id = req.nextUrl.pathname.split("/").pop();
+    const { name, locationIds } = await req.json();
 
-    if (!name) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!name || !Array.isArray(locationIds)) {
+      return NextResponse.json(
+        { error: "Missing name or locationIds" },
+        { status: 400 }
+      );
     }
 
-    const area = await Areas.findByPk(id); // Find the record by ID
+    const area = await Areas.findByPk(id);
     if (!area) {
-      return NextResponse.json({ error: 'Area not found' }, { status: 404 });
+      return NextResponse.json({ error: "Area not found" }, { status: 404 });
     }
 
-    await Areas.update({ name }); // Update the record with new data
+    // Update name
+    await area.update({ name });
 
-    return NextResponse.json({ message: 'Area updated', area }, { status: 200 });
+    // Update location associations
+    await area.setLocations(locationIds);
+
+    // Return updated area with locations
+    const updatedArea = await Areas.findByPk(id, {
+      include: [
+        {
+          model: Locations,
+          as: "locations",
+          attributes: ["id", "name"],
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    return NextResponse.json(
+      { message: "Area updated", area: updatedArea },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Error updating area' }, { status: 500 });
+    console.error("Error updating area:", error);
+    return NextResponse.json({ error: "Error updating area" }, { status: 500 });
   }
 }
 
-// DELETE area
+// DELETE area and remove associations
 export async function DELETE(req) {
   try {
-    const id = req.nextUrl.pathname.split('/').pop(); // Extract ID from the URL
-    const area = await Areas.findByPk(id); // Find the record by ID
+    const id = req.nextUrl.pathname.split("/").pop();
 
+    const area = await Areas.findByPk(id);
     if (!area) {
-      return NextResponse.json({ error: 'Area not found' }, { status: 404 });
+      return NextResponse.json({ error: "Area not found" }, { status: 404 });
     }
 
-    await area.destroy(); // Delete the record
+    // Optional: remove linked locations before deletion
+    await area.setLocations([]);
 
-    return NextResponse.json({ message: 'Area deleted' }, { status: 200 });
+    await area.destroy();
+
+    return NextResponse.json({ message: "Area deleted" }, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Error deleting area' }, { status: 500 });
+    console.error("Error deleting area:", error);
+    return NextResponse.json({ error: "Error deleting area" }, { status: 500 });
   }
 }

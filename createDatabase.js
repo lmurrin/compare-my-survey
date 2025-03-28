@@ -1,12 +1,11 @@
-const mysql = require('mysql2/promise');
-
-async function createSurveyorDatabase() {
+const mysql = require("mysql2/promise");
+const dotenv = async function createSurveyorDatabase() {
   const connection = await mysql.createConnection({
-    host: 'laurencemurrin.co.uk',
-    user: 'uhf1gnskjpqh7',
-    password: 'ValleyView8646*',
-    database: 'dbdcranbszswjp',
-    port: '3306'
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    database: process.env.DATABASE_NAME,
+    port: process.env.DATABASE_PORT,
   });
 
   try {
@@ -91,12 +90,12 @@ async function createSurveyorDatabase() {
       );
     `);
 
-    console.log('Database and tables created successfully.');
+    console.log("Database and tables created successfully.");
   } catch (err) {
-    console.error('Error setting up database:', err);
+    console.error("Error setting up database:", err);
   } finally {
     await connection.end();
   }
-}
+};
 
 createSurveyorDatabase();

@@ -4,21 +4,24 @@ import DashboardHeading from "@/app/components/dashboard/DashboardHeading";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import AddAreaModal from "@/app/components/dashboard/AddAreaModal";
+import { useRouter } from "next/navigation";
 
 export default function DashboardAreas() {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [locationBaskets, setLocationBaskets] = useState([]); // For storing all location baskets
-  
+  const [locationBaskets, setLocationBaskets] = useState([]);
+
+  const router = useRouter();
+
   // Fetch location baskets for the current surveyor
   useEffect(() => {
     const fetchLocationBaskets = async () => {
       try {
         const res = await fetch(`/api/areas/by-surveyor/${session.id}`);
         const baskets = await res.json();
-        
+
         if (res.ok) {
           setLocationBaskets(baskets);
         } else {
@@ -27,45 +30,37 @@ export default function DashboardAreas() {
       } catch (error) {
         console.error("Error fetching location baskets:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
-    
+
     if (session?.id) {
-      fetchLocationBaskets(); 
+      fetchLocationBaskets();
     }
   }, [session?.id]);
-
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-
-   
-
-    return  (
-        <>
-        <DashboardHeading 
-        title="Areas" 
+  return (
+    <>
+      <DashboardHeading
+        title="Areas"
         description="Create areas to receive leads from."
         showEditButton={false}
         showPublishButton={false}
-          />
+      />
 
-
-
-          <div className="px-0 sm:px-6 lg:px-8">
-            
+      <div className="px-0 sm:px-6 lg:px-8">
         <div className="mt-8 flow-root">
-            
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <button
-                onClick={() => setIsModalOpen(true)}
-                className="mb-4 rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500 cursor-pointer"
-                >
-                Add Area
-            </button>   
+              onClick={() => setIsModalOpen(true)}
+              className="mb-4 rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500 cursor-pointer"
+            >
+              Add Area
+            </button>
             <div className="inline-block min-w-full py-2 align-middle">
               {loading ? (
                 <div className="text-gray-500 text-sm">Loading...</div>
@@ -78,7 +73,7 @@ export default function DashboardAreas() {
                       <th className="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-0">
                         Area Name
                       </th>
-                      
+
                       <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                         Locations
                       </th>
@@ -93,15 +88,41 @@ export default function DashboardAreas() {
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                           {locationBasket.name}
                         </td>
-                        {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{service.locationBasket}</td> */}
-                        
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {locationBasket.locations?.length > 0 ? (
+                            <>
+                              {locationBasket.locations
+                                .slice(0, 3)
+                                .map((loc) => loc.name)
+                                .join(", ")}
+                              {locationBasket.locations.length > 3 && (
+                                <span className="text-gray-400">
+                                  {" "}
+                                  +{locationBasket.locations.length - 3} more
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-gray-400 italic">
+                              No locations
+                            </span>
+                          )}
+                        </td>
+
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                        <button
-                            onClick={() => handleEdit(locationBasket)}
+                          <button
+                            onClick={() =>
+                              router.push(
+                                `/dashboard/areas/edit/${locationBasket.id}`
+                              )
+                            }
                             className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
-                            >
-                            Edit<span className="sr-only">, {locationBasket.name}</span>
-                        </button>
+                          >
+                            Edit
+                            <span className="sr-only">
+                              , {locationBasket.name}
+                            </span>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -114,10 +135,10 @@ export default function DashboardAreas() {
       </div>
       {/* AddAreasModal */}
       <AddAreaModal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            locationBaskets={locationBaskets}
-        />
-      </>
-    )
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        locationBaskets={locationBaskets}
+      />
+    </>
+  );
 }

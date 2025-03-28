@@ -1,28 +1,32 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '@/lib/db';
+import { DataTypes } from "sequelize";
+import sequelize from "@/lib/db";
 
-const LocationBasketLocations = sequelize.define('LocationBasketLocations', {
-  locationBasketId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'Areas', // Ensure this is correct
-      key: 'id',
+const LocationBasketLocations = sequelize.define(
+  "LocationBasketLocations",
+  {
+    locationBasketId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: "location_baskets",
+        key: "id",
+      },
     },
-    primaryKey: true, // Make this the primary key if you don't want an 'id'
-  },
-  locationId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'Locations', // Ensure this is correct
-      key: 'id',
+    locationId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: "locations",
+        key: "id",
+      },
     },
   },
-}, {
-  tableName: 'location_basket_locations',
-  timestamps: false,
-});
-
+  {
+    tableName: "location_basket_locations",
+    timestamps: false,
+  }
+);
 
 export default LocationBasketLocations;

@@ -2,28 +2,23 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 export default function AddSurveyorServiceModal({
-    isOpen,
-    onClose,
-    onAdd,
-    surveyTypes,
-    selectedType,
-    setSelectedType,
-    locationBaskets
+  isOpen,
+  onClose,
+  onAdd,
+  surveyTypes,
+  selectedType,
+  setSelectedType,
+  locationBaskets,
 }) {
-    const [locationBasketId, setLocationBasketId] = useState("");
+  const [locationBasketId, setLocationBasketId] = useState("");
 
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (selectedType && locationBasketId) {
-          onAdd(selectedType, locationBasketId); 
-          onClose();
-        }
-      };
-      
-  
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (selectedType && locationBasketId) {
+      onAdd(selectedType, locationBasketId);
+      onClose();
+    }
+  };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -61,7 +56,10 @@ export default function AddSurveyorServiceModal({
 
                 <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                   <div>
-                    <label htmlFor="surveyType" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="surveyType"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Select a survey type
                     </label>
                     <select
@@ -70,9 +68,11 @@ export default function AddSurveyorServiceModal({
                       value={selectedType}
                       onChange={(e) => setSelectedType(e.target.value)}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
-                      <option value="" disabled>Select a type...</option>
+                      <option value="" disabled>
+                        Select a type...
+                      </option>
                       {surveyTypes.map((type) => (
                         <option key={type.id} value={type.id}>
                           {type.name}
@@ -82,26 +82,30 @@ export default function AddSurveyorServiceModal({
                   </div>
 
                   <div>
-                    <label htmlFor="locationBasket" className="block text-sm font-medium text-gray-700">
-                        Select a location basket
+                    <label
+                      htmlFor="locationBasket"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Select a location basket
                     </label>
                     <select
-                        id="locationBasket"
-                        name="locationBasket"
-                        value={locationBasketId}
-                        onChange={(e) => setLocationBasketId(e.target.value)}
-                        required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        >
-                        <option value="" disabled>Select a location...</option>
-                        {locationBaskets.map((basket) => (
-                            <option key={basket.id} value={basket.id}>
-                            {basket.name}
-                            </option>
-                        ))}
-                        </select>
-                    </div>
-
+                      id="locationBasket"
+                      name="locationBasket"
+                      value={locationBasketId}
+                      onChange={(e) => setLocationBasketId(e.target.value)}
+                      required
+                      className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    >
+                      <option value="" disabled>
+                        Select a location...
+                      </option>
+                      {locationBaskets.map((basket) => (
+                        <option key={basket.id} value={basket.id}>
+                          {basket.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
                   <div className="mt-6 flex justify-end space-x-3">
                     <button

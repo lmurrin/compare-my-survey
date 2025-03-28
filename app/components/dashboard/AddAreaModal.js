@@ -4,18 +4,12 @@ import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 
-export default function AddAreaModal({
-  isOpen,
-  onClose,
-  handleAddArea,
-}) {
+export default function AddAreaModal({ isOpen, onClose, handleAddArea }) {
   const [areaName, setAreaName] = useState("");
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [locations, setLocations] = useState([]);
   const [error, setError] = useState(null);
-  const { data: session } = useSession(); 
-
-
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (!isOpen) {
@@ -65,25 +59,25 @@ export default function AddAreaModal({
   // Handle add area
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!areaName.trim()) {
       setError("Please provide a name for the area.");
       return;
     }
-  
+
     if (selectedLocations.length === 0) {
       setError("Please select at least one location.");
       return;
     }
-  
+
     // if (!session.id) {
     //     setError("User session not found. Please log in again.");
     //     return;
     //   }
-      
+
     console.log(selectedLocations);
-    console.log(`Session: ${session.id}`)
-  
+    console.log(`Session: ${session.id}`);
+
     try {
       const res = await fetch("/api/areas", {
         method: "POST",
@@ -92,18 +86,18 @@ export default function AddAreaModal({
         },
         body: JSON.stringify({
           name: areaName.trim(),
-          locationIds: selectedLocations.map(id => Number(id)),
-          surveyorId: session.id
+          locationIds: selectedLocations.map((id) => Number(id)),
+          surveyorId: session.id,
         }),
       });
-  
+
       const data = await res.json();
-  
+
       if (!res.ok) {
         setError(data.error || "Error adding area");
         return;
       }
-  
+
       handleAddArea(data.id);
       onClose();
     } catch (err) {
@@ -111,7 +105,6 @@ export default function AddAreaModal({
       setError("An error occurred while creating the area");
     }
   };
-  
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -140,13 +133,19 @@ export default function AddAreaModal({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                <Dialog.Title
+                  as="h3"
+                  className="text-lg font-medium leading-6 text-gray-900"
+                >
                   Add New Area
                 </Dialog.Title>
 
                 <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                   <div>
-                    <label htmlFor="areaName" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="areaName"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Area Name
                     </label>
                     <input
@@ -156,12 +155,15 @@ export default function AddAreaModal({
                       value={areaName}
                       onChange={handleAreaNameChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
 
                   <div>
-                  <label htmlFor="locations" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="locations"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Select Locations
                     </label>
                     <select
@@ -171,7 +173,7 @@ export default function AddAreaModal({
                       value={selectedLocations}
                       onChange={handleLocationChange}
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="p-2 min-h-40 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                       {locations?.map((location) => (
                         <option key={location.id} value={location.id}>

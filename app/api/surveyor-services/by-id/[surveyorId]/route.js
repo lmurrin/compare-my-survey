@@ -1,17 +1,17 @@
-import { NextResponse } from 'next/server';
-import db from '@/lib/db';
-import { QueryTypes } from 'sequelize';
+export const dynamic = "force-dynamic";
 
-export async function GET(req, { params }) {
+import { NextResponse } from "next/server";
+import db from "@/lib/db";
+import { QueryTypes } from "sequelize";
+
+export async function GET(req, context) {
+  const { surveyorId } = await context.params;
+
+  if (!surveyorId) {
+    return NextResponse.json({ error: "Missing surveyorId" }, { status: 400 });
+  }
+
   try {
-    
-    const surveyorId = params.surveyorId;
-
-    if (!surveyorId) {
-      return NextResponse.json({ error: 'Missing surveyorId' }, { status: 400 });
-    }
-
-
     const rawResults = await db.query(
       `SELECT 
           ss.id AS serviceId,
@@ -45,15 +45,19 @@ export async function GET(req, { params }) {
 
     // Grouping logic
     const grouped = rawResults.reduce((acc, row) => {
-      let existing = acc.find(item => item.id === row.serviceId);
+      let existing = acc.find((item) => item.id === row.serviceId);
 
-      const location = row.locationId ? { id: row.locationId, name: row.locationName } : null;
-      const quote = row.quoteId ? {
-        id: row.quoteId,
-        propertyMinValue: row.propertyMinValue,
-        propertyMaxValue: row.propertyMaxValue,
-        price: row.price
-      } : null;
+      const location = row.locationId
+        ? { id: row.locationId, name: row.locationName }
+        : null;
+      const quote = row.quoteId
+        ? {
+            id: row.quoteId,
+            propertyMinValue: row.propertyMinValue,
+            propertyMaxValue: row.propertyMaxValue,
+            price: row.price,
+          }
+        : null;
 
       if (!existing) {
         existing = {
@@ -70,10 +74,13 @@ export async function GET(req, { params }) {
         };
         acc.push(existing);
       } else {
-        if (location && !existing.locations.find(loc => loc.id === location.id)) {
+        if (
+          location &&
+          !existing.locations.find((loc) => loc.id === location.id)
+        ) {
           existing.locations.push(location);
         }
-        if (quote && !existing.quotes.find(q => q.id === quote.id)) {
+        if (quote && !existing.quotes.find((q) => q.id === quote.id)) {
           existing.quotes.push(quote);
         }
       }
@@ -82,14 +89,16 @@ export async function GET(req, { params }) {
     }, []);
 
     // Sort quotes by propertyMinValue
-    grouped.forEach(service => {
+    grouped.forEach((service) => {
       service.quotes.sort((a, b) => a.propertyMinValue - b.propertyMinValue);
     });
 
     return NextResponse.json(grouped, { status: 200 });
-
   } catch (error) {
     console.error("Error fetching surveyor services:", error);
-    return NextResponse.json({ error: 'Error fetching surveyor services' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error fetching surveyor services" },
+      { status: 500 }
+    );
   }
 }

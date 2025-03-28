@@ -1,30 +1,37 @@
-import { NextResponse } from 'next/server';
-import Areas from '@/models/Areas';  // Ensure this points to your Areas model
+import { NextResponse } from "next/server";
+import { initModels, Areas, Locations } from "@/models/initModels";
 
-// GET areas by surveyorId
 export async function GET(req, { params }) {
   try {
-    const surveyorId = params['surveyor-id'];  // Extract surveyorId from URL
+    const surveyorId = params["surveyor-id"];
 
     if (!surveyorId) {
-      return NextResponse.json({ error: 'Missing surveyorId' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing surveyorId" },
+        { status: 400 }
+      );
     }
 
-    // Fetch areas related to the given surveyorId
+    initModels();
+
     const areas = await Areas.findAll({
-      where: {
-        surveyorId: surveyorId  // Filter areas by the surveyorId
-      }
+      where: { surveyorId },
+      include: [
+        {
+          model: Locations,
+          as: "locations",
+          attributes: ["id", "name"],
+          through: { attributes: [] }, // exclude join table fields
+        },
+      ],
     });
 
-    if (areas.length === 0) {
-      return NextResponse.json({ error: 'No areas found for this surveyor' }, { status: 404 });
-    }
-
-    // Return the areas data
     return NextResponse.json(areas, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Error fetching areas by surveyorId' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error fetching areas by surveyorId" },
+      { status: 500 }
+    );
   }
 }
