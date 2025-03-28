@@ -1,22 +1,50 @@
-import { NextResponse } from 'next/server';
-import SurveyType from '@/models/SurveyType'; 
+import { NextResponse } from "next/server";
+import SurveyType from "@/models/SurveyType";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": process.env.FRONT_END_URL,
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      status: 200,
+      headers: corsHeaders,
+    }
+  );
+}
 
 // GET all survey types
 export async function GET() {
   try {
-    // Fetch all survey types using Sequelize
     const surveyTypes = await SurveyType.findAll();
 
-    // If no survey types are found, return an empty array or a 404 response
     if (surveyTypes.length === 0) {
-      return NextResponse.json({ message: 'No survey types found' }, { status: 404 });
+      return NextResponse.json(
+        { message: "No survey types found" },
+        {
+          status: 404,
+          headers: corsHeaders,
+        }
+      );
     }
 
-    // Return the list of survey types
-    return NextResponse.json(surveyTypes, { status: 200 });
+    return NextResponse.json(surveyTypes, {
+      status: 200,
+      headers: corsHeaders,
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Error fetching survey types' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error fetching survey types" },
+      {
+        status: 500,
+        headers: corsHeaders,
+      }
+    );
   }
 }
 
@@ -25,16 +53,32 @@ export async function POST(req) {
   try {
     const { name } = await req.json();
     if (!name) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        {
+          status: 400,
+          headers: corsHeaders,
+        }
+      );
     }
 
-    // Create a new survey type using Sequelize
     const newSurveyType = await SurveyType.create({ name });
 
-    // Return a response with the newly created survey type's id
-    return NextResponse.json({ message: 'Survey type added', id: newSurveyType.id }, { status: 201 });
+    return NextResponse.json(
+      { message: "Survey type added", id: newSurveyType.id },
+      {
+        status: 201,
+        headers: corsHeaders,
+      }
+    );
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Error adding survey type' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error adding survey type" },
+      {
+        status: 500,
+        headers: corsHeaders,
+      }
+    );
   }
 }
