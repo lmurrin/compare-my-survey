@@ -1,7 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "./LayoutWrapper";
-import ClientSessionWrapper from "./ClientSessionWrapper"; // Import the new ClientSessionWrapper component
+import ClientSessionWrapper from "./ClientSessionWrapper";
+import Notication from "./components/Notication";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,10 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <LayoutWrapper>
-          <ClientSessionWrapper>{children}</ClientSessionWrapper>
+          <ClientSessionWrapper>
+            {children}
+            <Notication />
+          </ClientSessionWrapper>
         </LayoutWrapper>
       </body>
     </html>
