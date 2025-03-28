@@ -8,8 +8,8 @@ const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
-    NEXT_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_API_KEY,
+    NEXT_PUBLIC_SERVER_URL: "http://localhost:3000",
+    NEXT_PUBLIC_API_KEY: "ValleyView8646*",
   },
   webpack(config) {
     config.resolve.alias["@"] = path.resolve(__dirname, "app");
