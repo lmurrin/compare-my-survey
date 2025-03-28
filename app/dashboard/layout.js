@@ -1,59 +1,40 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  TransitionChild,
-} from '@headlessui/react'
-import {
-  Bars3Icon,
-  BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
-  Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
-  MapIcon,
-  UserCircleIcon,
-  CurrencyPoundIcon
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+"use client";
+import { useEffect, useState } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, TransitionChild } from '@headlessui/react';
+import { Bars3Icon, BellIcon, CalendarIcon, ChartPieIcon, Cog6ToothIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon, XMarkIcon, MapIcon, UserCircleIcon, CurrencyPoundIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { SessionProvider, useSession, signOut } from 'next-auth/react';
-
-
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H' },
   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T' },
   { id: 3, name: 'Workcation', href: '#', initial: 'W' },
-]
+];
 
 const userNavigation = [
   { name: 'Your profile', href: '#' },
-  { 
-    name: 'Sign out', 
-    href: '#', 
-    onClick: () => signOut() 
+  {
+    name: 'Sign out',
+    href: '#',
+    onClick: () => signOutAndRedirect(), // Modify onClick to call the function
   },
 ];
 
+// Function to handle sign out and redirection
+const signOutAndRedirect = () => {
+  signOut({ redirect: true, callbackUrl: '/login' }); // Let NextAuth handle the redirect
+};
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function DashboardLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: session } = useSession();
+  const router = useRouter(); // Use router for programmatic navigation
+
   const baseNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'My Services', href: '/dashboard/services', icon: DocumentDuplicateIcon },
@@ -61,23 +42,23 @@ export default function DashboardLayout({ children }) {
     { name: 'Profile', href: '/dashboard/profile', icon: UserCircleIcon },
     { name: 'Billing', href: '/dashboard/billing', icon: CurrencyPoundIcon },
   ];
-  
+
   const adminNavigation = [
     { name: 'Survey Types', href: '/dashboard/survey-types', icon: FolderIcon },
     { name: 'Locations', href: '/dashboard/locations', icon: MapIcon },
     { name: 'Reports', href: '/dashboard/reports', icon: ChartPieIcon },
   ];
-  
+
   const [navigation, setNavigation] = useState(baseNavigation);
-  
+
   // Update navigation based on user role
   useEffect(() => {
     if (session?.isAdmin) {
       let updatedNavigation = [...baseNavigation];
-  
+
       // Insert admin-only links
       updatedNavigation.splice(1, 0, ...adminNavigation);
-  
+
       // Add Surveyors link if not already present
       if (!updatedNavigation.some(item => item.name === 'Surveyors')) {
         updatedNavigation.splice(1, 0, {
@@ -86,7 +67,7 @@ export default function DashboardLayout({ children }) {
           icon: UsersIcon,
         });
       }
-  
+
       setNavigation(updatedNavigation);
     }
   }, [session]);
@@ -275,7 +256,7 @@ export default function DashboardLayout({ children }) {
                     <MenuItem key={item.name}>
                       <a
                         href={item.href}
-                        onClick={item.onClick}
+                        onClick={item.onClick} // Ensure onClick is properly attached
                         className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
                       >
                         {item.name}

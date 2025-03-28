@@ -1,27 +1,35 @@
 // app/login/page.js
 "use client";
 
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const { data: session } = useSession(); // Get the session state
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const router = useRouter();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (session?.user) {
+      router.push('/dashboard'); // Redirect to dashboard if already logged in
+    }
+  }, [session, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const result = await signIn("credentials", {
-        redirect: false,
-        email: credentials.email,
-        password: credentials.password,
-      });
+      redirect: false,
+      email: credentials.email,
+      password: credentials.password,
+    });
 
     if (result?.error) {
       alert('Invalid credentials');
     } else {
-      router.push('/dashboard'); // Redirect to dashboard on successful login
+      router.push('/dashboard'); // Redirect to dashboard after successful login
     }
   };
 
@@ -97,8 +105,8 @@ export default function Login() {
 
           <p className="mt-10 text-center text-sm/6 text-gray-500">
             Not a member?{' '}
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-              Start a 14 day free trial
+            <a href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              Register now
             </a>
           </p>
         </div>

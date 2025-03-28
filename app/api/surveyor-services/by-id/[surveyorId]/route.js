@@ -5,7 +5,7 @@ import { QueryTypes } from 'sequelize';
 export async function GET(req, { params }) {
   try {
     
-    const surveyorId = params.surveyorId
+    const surveyorId = params.surveyorId;
 
     if (!surveyorId) {
       return NextResponse.json({ error: 'Missing surveyorId' }, { status: 400 });

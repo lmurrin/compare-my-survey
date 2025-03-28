@@ -1,46 +1,46 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import { Surveyor } from "@/models"; // Adjust based on your ORM setup
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
+import { Surveyor } from '@/models';
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        console.log("Received credentials:", credentials); // Log the credentials
-        const user = await Surveyor.findOne({ where: { email: credentials.email } });
-      
-        if (user) {
-          const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
-          console.log("Password match:", isPasswordValid); // Log password comparison result
-      
-          if (isPasswordValid) {
-            return {
-              id: user.id,
-              email: user.email,
-              companyName: user.companyName,
-              isAdmin: user.isAdmin,
-              phone: user.phone,
-              address: user.address,
-              description: user.description,
-            };
-          }
+        const { email, password } = credentials;
+        
+        // Fetch the user by email from the database
+        const user = await Surveyor.findOne({ where: { email } });
+        
+        // Check if the user exists and if the password matches
+        if (user && bcrypt.compareSync(password, user.password)) {
+          // Return user details if password matches
+          return {
+            id: user.id,
+            email: user.email,
+            companyName: user.companyName,
+            isAdmin: user.isAdmin,
+            phone: user.phone,
+            address: user.address,
+            description: user.description,
+          };
         }
-        return null; // Invalid credentials
-      }
-      ,
+
+        // Return null for invalid credentials
+        return null;
+      },
     }),
   ],
   pages: {
-    error: "/auth/error", // Redirect to a custom error page
+    error: '/auth/error', // Redirect to a custom error page on failure
   },
   session: {
-    strategy: "jwt", // Using JWT strategy
+    strategy: 'jwt', // Use JWT session strategy
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -54,8 +54,7 @@ const handler = NextAuth({
         token.description = user.description;
       }
       return token;
-    }
-    ,
+    },
     async session({ session, token }) {
       session.id = token.id;
       session.email = token.email;
@@ -65,8 +64,7 @@ const handler = NextAuth({
       session.address = token.address;
       session.description = token.description;
       return session;
-    }
-    ,
+    },
   },
   secret: process.env.JWT_SECRET, // Ensure you have a JWT secret
 });

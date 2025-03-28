@@ -1,7 +1,7 @@
 // app/api/register/route.js
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import Surveyor from '@/models/Surveyor'; // Import the Surveyor model
+import {Surveyor} from '@/models/'; // Ensure correct import
 
 export async function POST(req) {
   try {
@@ -29,7 +29,7 @@ export async function POST(req) {
       address,
       description,
       password: hashedPassword,
-      isAdmin: isAdmin || false,
+      isAdmin: false, // Default to false if not provided
     });
 
     return NextResponse.json({ message: 'User created successfully' }, { status: 201 });

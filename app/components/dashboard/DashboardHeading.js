@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 export default function DashboardHeading({
   title = "Dashboard",
+  description = "",
   showEditButton = true,
   showPublishButton = true,
   editButtonText = "Edit",
@@ -15,6 +16,7 @@ export default function DashboardHeading({
         <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
           {title}
         </h2>
+        {description && description.trim() !== "" && <p className="py-2">{description}</p>}
       </div>
       <div className="mt-4 flex md:ml-4 md:mt-0">
         {showEditButton && (
