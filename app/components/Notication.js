@@ -36,8 +36,9 @@ export default function Notication() {
                       working yet.
                     </p>
                     <p className="mt-1 text-sm text-gray-300">
-                      You can test the search feature using postcodes "DA4" &
-                      "BR1". This will return comparison results.
+                      You can test the search feature using postcodes
+                      &quot;DA4&quot; & &quot;BR1&quot;. This will return
+                      comparison results.
                     </p>
                     <p className="mt-1 text-sm text-gray-300">
                       Feel free to create an account and log in to set up your
