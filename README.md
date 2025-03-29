@@ -1,24 +1,27 @@
-# 🏠 Compare My Survey
+# Compare My Survey
 
 Compare My Survey is a modern web application that helps users compare quotes from local property surveyors. Users can submit their postcode, choose the type of property survey they need, and instantly view quotes and contact surveyors offering services in their area.
 
-## 🚀 Features
+## Features
 
-- 🔍 Compare survey quotes by postcode and property price
-- 🧾 Filter results by survey type (e.g., HomeBuyer, Building Survey, etc.)
-- 📍 Support for UK postcode search, including robust postcode normalization
-- 📧 Contact surveyors directly via email or phone
-- 📄 Surveyor dashboard with profile, services, and editable location coverage
-- 🖼 Upload and display surveyor logos and company information
-- ⭐ Star rating visuals for each listing
+- Compare survey quotes by postcode and property price
+- Filter results by survey type (e.g., HomeBuyer, Building Survey, etc.)
+- Support for UK postcode search, including robust postcode normalization
+- Contact surveyors directly via email or phone
+- Surveyor dashboard with profile, services, and editable location coverage
+- Upload and display surveyor logos and company information
+- Star rating visuals for each listing
 
-## 📸 Preview
+## Preview
 
-![View live example](https://compare-my-survey-aa825.ondigitalocean.app/)  
+<a href="https://compare-my-survey-aa825.ondigitalocean.app/" target="_blank">
+  <img src="https://compare-my-survey-aa825.ondigitalocean.app/" alt="View live example" />
+</a>
+
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Next.js 13+ / App Router**
 - **Tailwind CSS** for styling
@@ -29,7 +32,7 @@ Compare My Survey is a modern web application that helps users compare quotes fr
 
 ---
 
-## 📦 Setup Instructions
+## Setup Instructions
 
 1. **Clone the repository**
 
