@@ -15,7 +15,7 @@ Compare My Survey is a modern web application that helps users compare quotes fr
 ## Preview
 
 <a href="https://compare-my-survey-aa825.ondigitalocean.app/" target="_blank">
-  <img src="https://compare-my-survey-aa825.ondigitalocean.app/" alt="View live example" />
+  View live demo
 </a>
 
 
