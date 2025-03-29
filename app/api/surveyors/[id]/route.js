@@ -3,6 +3,7 @@ import db from '@/lib/db';
 import { QueryTypes } from 'sequelize';
 import Surveyor from '@/models/Surveyor';
 
+
 export async function GET(req, context) {
   try {
     const { id } = await context.params; 
@@ -27,17 +28,24 @@ export async function GET(req, context) {
 
 
 
-export async function PUT(req, { params }) {
-  const { id } = params;
+export async function PUT(req, context) {
+  const { id } = context.params;
+  const defaultLogo = "/user-icon.png";
 
   try {
-    const { name, email, phone, address, description } = await req.json();
+    const { name, email, phone, address, description, logo } = await req.json();
 
     await Surveyor.update(
-      { name, email, phone, address, description },
+      {
+        name,
+        email,
+        phone,
+        address,
+        description,
+        logo: logo || defaultLogo,
+      },
       { where: { id } }
     );
-    
 
     return NextResponse.json({ message: 'Surveyor updated' }, { status: 200 });
   } catch (error) {
@@ -45,6 +53,9 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: 'Error updating surveyor' }, { status: 500 });
   }
 }
+
+
+
 
 
 export async function DELETE(req, { params }) {

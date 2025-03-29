@@ -1,6 +1,7 @@
 // models/Surveyor.js
 import { DataTypes } from 'sequelize';
-import sequelize from '@/lib/sequelize'; // Import the sequelize instance
+import sequelize from '@/lib/sequelize';
+
 
 const Surveyor = sequelize.define('Surveyor', {
   companyName: {
@@ -31,6 +32,11 @@ const Surveyor = sequelize.define('Surveyor', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  logo: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  
 });
 
 export default Surveyor;

@@ -1,7 +1,7 @@
 // app/api/register/route.js
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import {Surveyor} from '@/models/'; // Ensure correct import
+import { Surveyor } from '@/models/'; // Ensure correct import
 
 export async function POST(req) {
   try {
@@ -9,9 +9,7 @@ export async function POST(req) {
 
     // Check if user already exists
     const existingUser = await Surveyor.findOne({
-      where: {
-        email: email,
-      },
+      where: { email },
     });
 
     if (existingUser) {
@@ -21,15 +19,19 @@ export async function POST(req) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user
-    const user = await Surveyor.create({
+    // Default logo path (served from /public folder)
+    const defaultLogo = '/user-icon.png';
+
+    // Create new user
+    await Surveyor.create({
       companyName,
       email,
       phone,
       address,
       description,
       password: hashedPassword,
-      isAdmin: false, // Default to false if not provided
+      isAdmin: false,
+      logo: defaultLogo,
     });
 
     return NextResponse.json({ message: 'User created successfully' }, { status: 201 });

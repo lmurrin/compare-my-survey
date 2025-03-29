@@ -47,7 +47,7 @@ export default function InputPropertyPriceSelect({ onChange, value }) {
 
   return (
     <Listbox value={selected} onChange={handleChange}>
-      <Label className="block text-sm/6 font-medium text-gray-900">
+      <Label className="block text-base/7 font-medium text-indigo-600">
         Property price
       </Label>
       <div className="relative mt-2">

@@ -9,15 +9,17 @@ export default function DashboardProfile() {
     const { data: session } = useSession();
 
     const [formData, setFormData] = useState({
-        surveyType: '',
-        surveyorServices: [],
-        surveyorServiceLocations: [],
-        companyName: '',
-        email: '',
-        phone: '',
-        address: '',
-        description: '',
-      });
+      surveyType: '',
+      surveyorServices: [],
+      surveyorServiceLocations: [],
+      companyName: '',
+      email: '',
+      phone: '',
+      address: '',
+      description: '',
+      logoUrl: '', 
+    });
+    
 
     // Populate form data from storage
     useEffect(() => {
@@ -94,6 +96,31 @@ export default function DashboardProfile() {
         }
       }, [session]);
       
+      const handleLogoChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+      
+        const formDataUpload = new FormData();
+        formDataUpload.append("file", file);
+      
+        try {
+          const res = await fetch(`/api/upload/logo`, {
+            method: "POST",
+            body: formDataUpload,
+          });
+      
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "Upload failed");
+      
+          setFormData((prev) => ({
+            ...prev,
+            logoUrl: data.url,
+          }));
+        } catch (err) {
+          console.error("Logo upload failed:", err);
+          alert("Failed to upload logo.");
+        }
+      };
       
       
 
