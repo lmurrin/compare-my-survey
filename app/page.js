@@ -59,6 +59,7 @@ export default function Home() {
                         onChange={(e) => setLocation(e.target.value.toUpperCase())}
 
                       />
+                      
                       <button
                         type="submit"
                         className="cursor-pointer flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -66,6 +67,7 @@ export default function Home() {
                         Compare Now
                       </button>
                     </div>
+                    <p className="text-sm mt-4 text-pink-500">For the purposes of this demo site, please use a London postcode.</p>
                   </form>
                 </div>
               </div>
