@@ -1,6 +1,7 @@
 import { UserCircleIcon } from '@heroicons/react/24/solid';
 
-export default function SurveyorProfile({ formData, handleInputChange }) {
+export default function SurveyorProfile({ formData, handleInputChange, handleLogoChange }) {
+
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
       <div>
@@ -114,8 +115,8 @@ export default function SurveyorProfile({ formData, handleInputChange }) {
               Logo
             </label>
             <div className="mt-2 flex items-center gap-x-3">
-              {formData.logoUrl ? (
-                <img src={formData.logoUrl} alt="Logo preview" className="h-12 w-12 rounded-full object-cover" />
+              {formData.logo ? (
+                <img src={formData.logo} alt="Logo preview" className="h-12 w-12 rounded-full object-cover" />
               ) : (
                 <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" />
               )}

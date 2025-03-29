@@ -17,7 +17,7 @@ export default function DashboardProfile() {
       phone: '',
       address: '',
       description: '',
-      logoUrl: '', 
+      logo: '', 
     });
     
 
@@ -114,7 +114,7 @@ export default function DashboardProfile() {
       
           setFormData((prev) => ({
             ...prev,
-            logoUrl: data.url,
+            logo: data.url,
           }));
         } catch (err) {
           console.error("Logo upload failed:", err);
@@ -133,7 +133,7 @@ export default function DashboardProfile() {
       />
 
       <form onSubmit={handleSubmit}>
-        <SurveyorProfile formData={formData} handleInputChange={handleInputChange} />
+        <SurveyorProfile formData={formData} handleInputChange={handleInputChange} handleLogoChange={handleLogoChange} />
 
             <div className="mt-6 flex items-center justify-end gap-x-6">
                 <button type="button" className="text-sm/6 font-semibold text-gray-900">
