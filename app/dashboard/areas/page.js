@@ -43,6 +43,21 @@ export default function DashboardAreas() {
     setIsModalOpen(false);
   };
 
+  // Add this inside your DashboardAreas component
+const handleAddArea = async (newAreaId) => {
+  try {
+    const res = await fetch(`/api/areas/by-surveyor/${session.id}`);
+    if (!res.ok) throw new Error("Failed to fetch updated areas");
+
+    const updatedAreas = await res.json();
+    setLocationBaskets(updatedAreas);
+  } catch (err) {
+    console.error("Error reloading areas:", err);
+    setError("Failed to reload areas after adding.");
+  }
+};
+
+
   return (
     <>
       <DashboardHeading
@@ -135,10 +150,12 @@ export default function DashboardAreas() {
       </div>
       {/* AddAreasModal */}
       <AddAreaModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        locationBaskets={locationBaskets}
-      />
+  isOpen={isModalOpen}
+  onClose={closeModal}
+  handleAddArea={handleAddArea}
+/>
+
+
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { UserCircleIcon } from '@heroicons/react/24/solid';
+import AlertError from '../AlertError';
 
 export default function SurveyorProfile({ formData, handleInputChange, handleLogoChange }) {
 
@@ -129,6 +130,13 @@ export default function SurveyorProfile({ formData, handleInputChange, handleLog
                 className="text-sm text-gray-700"
               />
             </div>
+
+            <AlertError
+                title="Note:"
+                messages={[
+                  "Logo upload is not operational during production.",
+                ]}
+              />
           </div>
             
           </div>

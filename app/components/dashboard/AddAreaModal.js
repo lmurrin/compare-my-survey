@@ -4,7 +4,10 @@ import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 
-export default function AddAreaModal({ isOpen, onClose, handleAddArea }) {
+export default function AddAreaModal(props) {
+  const { isOpen, onClose, handleAddArea } = props;
+  const safeHandleAddArea = typeof handleAddArea === "function" ? handleAddArea : () => {};
+
   const [areaName, setAreaName] = useState("");
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -38,11 +41,11 @@ export default function AddAreaModal({ isOpen, onClose, handleAddArea }) {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const res = await fetch(`/api/locations`);
+        const res = await fetch("/api/locations");
         const locationsData = await res.json();
-
+  
         if (res.ok) {
-          setLocations(locationsData);
+          setLocations(locationsData); // ✅ correct
         } else {
           console.error("Error fetching locations:", locationsData.error);
           setError("Failed to load locations");
@@ -52,9 +55,10 @@ export default function AddAreaModal({ isOpen, onClose, handleAddArea }) {
         setError("Failed to load locations");
       }
     };
-
+  
     fetchLocations();
   }, []);
+  
 
   // Handle add area
   const handleSubmit = async (e) => {
@@ -105,6 +109,7 @@ export default function AddAreaModal({ isOpen, onClose, handleAddArea }) {
       setError("An error occurred while creating the area");
     }
   };
+  
 
   return (
     <Transition appear show={isOpen} as={Fragment}>

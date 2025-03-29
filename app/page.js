@@ -56,11 +56,12 @@ export default function Home() {
                         autoComplete="location"
                         className="text-lg lg:min-w-100 flex-auto rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 "
                         value={location}
-                        onChange={(e) => setLocation(e.target.value)}
+                        onChange={(e) => setLocation(e.target.value.toUpperCase())}
+
                       />
                       <button
                         type="submit"
-                        className="flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="cursor-pointer flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Compare Now
                       </button>

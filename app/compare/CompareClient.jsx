@@ -88,27 +88,53 @@ export default function CompareClient() {
     }));
   };
 
+  const getOutwardCode = (postcode) => {
+    if (!postcode) return "";
+  
+    const clean = postcode.trim().toUpperCase().replace(/\s+/g, "");
+  
+    // If it's a full postcode (6–8 characters), extract outward code
+    const fullPostcodeMatch = clean.match(/^([A-Z]{1,2}\d{1,2}[A-Z]?)\d[A-Z]{2}$/);
+    if (fullPostcodeMatch) {
+      return fullPostcodeMatch[1];
+    }
+  
+    // If it looks like a valid outward code, allow it
+    const outwardCodeMatch = clean.match(/^[A-Z]{1,2}\d{1,2}[A-Z]?$/);
+    if (outwardCodeMatch) {
+      return clean;
+    }
+  
+    // Fallback
+    return "";
+  };
+  
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setHasSearched(true);
     setSearchResults([]);
-
+  
     try {
+      const outwardCode = getOutwardCode(formData.propertyLocation);
+
+      console.log(outwardCode)
+  
       const queryParams = new URLSearchParams({
         surveyType: formData.surveyType,
-        location: formData.propertyLocation,
+        location: outwardCode,
         propertyPrice: formData.propertyPrice,
       }).toString();
-
+  
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search?${queryParams}`
       );
-
+  
       const result = await response.json();
       setSearchResults(result.services || []);
-
-      // ✅ Smooth scroll to results
+  
       setTimeout(() => {
         const resultsSection = document.getElementById("search-results");
         if (resultsSection) {
@@ -117,20 +143,17 @@ export default function CompareClient() {
             resultsSection.getBoundingClientRect().top +
             window.pageYOffset +
             yOffset;
-
+  
           window.scrollTo({ top: y, behavior: "smooth" });
         }
-
-        if (resultsSection) {
-          resultsSection.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100); // small delay to allow render
+      }, 100);
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <>
@@ -170,13 +193,32 @@ export default function CompareClient() {
             </div>
           </div>
           {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-4xl w-full">
           <div className="flex items-center justify-center p-4">
             <div className="w-full max-w-[700px] bg-white rounded-lg py-0">
               <form onSubmit={handleSubmit}>
                 <div className="space-y-12">
                   <div>
-                    <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div className="w-full mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div className="max-w-50 sm:col-span-full">
+                        <label
+                          htmlFor="propertyLocation"
+                          className="block text-base/7 font-medium text-indigo-600"
+                        >
+                          Property postcode
+                        </label>
+                        <div className="mt-2">
+                          <input
+                            type="text"
+                            name="propertyLocation"
+                            id="propertyLocation"
+                            value={formData.propertyLocation}
+                            onChange={handleInputChange}
+                            className="text-lg block w-full rounded-md bg-white px-3 py-2 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                          />
+                        </div>
+                      </div>
+
                       <div className="sm:col-span-full">
                         <label
                           htmlFor="surveyType"
@@ -225,24 +267,7 @@ export default function CompareClient() {
                         />
                       </div>
 
-                      <div className="sm:col-span-full">
-                        <label
-                          htmlFor="propertyLocation"
-                          className="block text-base/7 font-medium text-indigo-600"
-                        >
-                          Property postcode
-                        </label>
-                        <div className="mt-2">
-                          <input
-                            type="text"
-                            name="propertyLocation"
-                            id="propertyLocation"
-                            value={formData.propertyLocation}
-                            onChange={handleInputChange}
-                            className="text-lg block w-full rounded-md bg-white px-3 py-2 text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
-                          />
-                        </div>
-                      </div>
+                     
 
                       <div className="sm:col-span-3">
                         <label
@@ -403,18 +428,29 @@ export default function CompareClient() {
               {searchResults.length > 0 && (
                 <div id="search-results" className="mt-8">
                   <h2 className="text-2xl font-bold mb-4">Search Results</h2>
+                  <p className="mb-8">
+                    Showing surveyors offering{" "}
+                    <span className="font-semibold text-gray-900">{formData.surveyType}s</span>{" "}
+                    in{" "}
+                    <span className="font-semibold text-gray-900">{formData.propertyLocation}</span>:
+                  </p>
+
 
                   <ResultsCards
-                    surveyors={searchResults.map((service) => ({
-                      name: service.surveyor.companyName,
-                      title: `Survey Type: ${service.surveyType} · Description: ${service.surveyor.description}`,
-                      role: "Surveyor",
-                      email: service.surveyor.email,
-                      telephone: service.surveyor.phone,
-                      imageUrl: service.surveyor.imageUrl || null,
-                      quote: service.applicableQuote,
-                    }))}
+                    surveyors={searchResults
+                      .sort((a, b) => a.applicableQuote.price - b.applicableQuote.price)
+                      .map((service) => ({
+                        name: service.surveyor.companyName,
+                        title: `Survey Type: ${service.surveyType} · Description: ${service.surveyor.description}`,
+                        role: "Surveyor",
+                        email: service.surveyor.email,
+                        telephone: service.surveyor.phone,
+                        imageUrl: service.surveyor.imageUrl || null,
+                        quote: service.applicableQuote,
+                      }))}
                   />
+
+
                 </div>
               )}
             </div>
