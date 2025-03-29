@@ -10,12 +10,13 @@ const dotenv = async function createSurveyorDatabase() {
 
   try {
     // Create the database
-    await connection.query(`CREATE DATABASE IF NOT EXISTS dbdcranbszswjp`);
-    await connection.query(`USE dbdcranbszswjp`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS [ENTER DATABASE NAME]`); // ENTER DATABASE NAME
+    await connection.query(`USE [ENTER DATABASE NAME]`); // ENTER DATABASE NAME
 
     // Create tables
     await connection.query(`
       CREATE TABLE IF NOT EXISTS \`location_basket_locations\` (
+      \`id\` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         \`locationBasketId\` int NOT NULL,
         \`locationId\` int NOT NULL
       );
@@ -23,8 +24,8 @@ const dotenv = async function createSurveyorDatabase() {
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS \`location_baskets\` (
+      \`id\` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         \`createdAt\` datetime,
-        \`id\` int NOT NULL,
         \`name\` varchar(255) NOT NULL,
         \`surveyorId\` int NOT NULL,
         \`updatedAt\` datetime
@@ -33,8 +34,8 @@ const dotenv = async function createSurveyorDatabase() {
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS \`locations\` (
+      \`id\` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         \`createdAt\` datetime,
-        \`id\` int NOT NULL,
         \`name\` varchar(255) NOT NULL,
         \`updatedAt\` datetime
       );
@@ -42,8 +43,8 @@ const dotenv = async function createSurveyorDatabase() {
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS \`quotes\` (
+      \`id\` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         \`createdAt\` datetime,
-        \`id\` int NOT NULL,
         \`price\` decimal NOT NULL,
         \`propertyMaxValue\` int NOT NULL,
         \`propertyMinValue\` int NOT NULL,
@@ -54,8 +55,8 @@ const dotenv = async function createSurveyorDatabase() {
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS \`survey_types\` (
+      \`id\` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         \`createdAt\` datetime,
-        \`id\` int NOT NULL,
         \`name\` varchar(255) NOT NULL,
         \`updatedAt\` datetime
       );
@@ -63,9 +64,9 @@ const dotenv = async function createSurveyorDatabase() {
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS \`surveyor_services\` (
+      \`id\` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         \`active\` tinyint DEFAULT '0.0',
         \`createdAt\` datetime,
-        \`id\` int NOT NULL,
         \`locationBasketId\` int,
         \`surveyorId\` int,
         \`surveyTypeId\` int,
@@ -75,12 +76,12 @@ const dotenv = async function createSurveyorDatabase() {
 
     await connection.query(`
       CREATE TABLE IF NOT EXISTS \`surveyors\` (
+        \`id\` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
         \`addressLine1\` varchar(255),
         \`city\` varchar(255),
         \`companyName\` varchar(255),
         \`createdAt\` datetime,
         \`email\` varchar(255),
-        \`id\` int NOT NULL,
         \`phone\` varchar(255),
         \`postcode\` varchar(255),
         \`stripeCustomerId\` varchar(255),

@@ -1,0 +1,22 @@
+# Database Connection
+DATABASE_HOST=
+DATABASE_USER=
+DATABASE_PASS=
+DATABASE_NAME=
+DATABASE_PORT=
+
+# Database Connection URL
+DATABASE_URL=
+JWT_SECRET=
+
+
+# Site Settings
+NEXT_PUBLIC_API_BASE_URL=
+
+# Auth Settings
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+
+
+
+
