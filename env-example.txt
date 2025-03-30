@@ -17,6 +17,9 @@ NEXT_PUBLIC_API_BASE_URL=
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=
 
+# Strapi CMS API - if using strapi for blog
+NEXT_PUBLIC_STRAPI_API_URL=
+
 
 
 

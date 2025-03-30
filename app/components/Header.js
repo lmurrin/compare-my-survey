@@ -112,10 +112,7 @@ export default function Header() {
             </PopoverPanel>
           </Popover>
 
-          <Link href="#" className="text-sm/6 font-semibold text-gray-900">
-            Consumers
-          </Link>
-          <Link href="#" className="text-sm/6 font-semibold text-gray-900">
+          <Link href="/blog" className="text-sm/6 font-semibold text-gray-900">
             Articles
           </Link>
           <Link href="#" className="text-sm/6 font-semibold text-gray-900">
