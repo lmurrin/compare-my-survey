@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
 
 export default function Breadcrumb({ pages = [] }) {
   return (
@@ -8,10 +9,10 @@ export default function Breadcrumb({ pages = [] }) {
       <ol role="list" className="flex items-center space-x-4">
         <li>
           <div>
-            <a href="/" className="text-gray-400 hover:text-gray-500 flex items-center">
+            <Link href="/" className="text-gray-400 hover:text-gray-500 flex items-center">
               <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
               <span className="sr-only">Home</span>
-            </a>
+            </Link>
           </div>
         </li>
 
@@ -19,7 +20,7 @@ export default function Breadcrumb({ pages = [] }) {
           <li key={index}>
             <div className="flex items-center">
               <ChevronRightIcon aria-hidden="true" className="size-5 shrink-0 text-gray-400" />
-              <a
+              <Link
                 href={page.href}
                 aria-current={page.current ? 'page' : undefined}
                 className={`ml-4 text-sm font-semibold ${
@@ -27,7 +28,7 @@ export default function Breadcrumb({ pages = [] }) {
                 }`}
               >
                 {page.name}
-              </a>
+              </Link>
             </div>
           </li>
         ))}
