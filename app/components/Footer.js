@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const navigation = {
   solutions: [
     { name: "Marketing", href: "#" },
@@ -95,14 +97,14 @@ export default function Footer() {
         <div className="mt-12 border-t border-gray-900/10 pt-8 md:flex md:items-center md:justify-between">
           <div className="flex gap-x-6 md:order-2">
             {navigation.social.map((item) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className="text-gray-600 hover:text-gray-800"
               >
                 <span className="sr-only">{item.name}</span>
                 <item.icon aria-hidden="true" className="size-6" />
-              </a>
+              </Link>
             ))}
           </div>
           <p className="mt-8 text-sm/6 text-gray-600 md:order-1 md:mt-0">

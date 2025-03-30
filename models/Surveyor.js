@@ -1,6 +1,6 @@
 // models/Surveyor.js
 import { DataTypes } from 'sequelize';
-import sequelize from '@/lib/sequelize';
+import sequelize from '@/lib/db';
 
 
 const Surveyor = sequelize.define('Surveyor', {

@@ -32,6 +32,8 @@ import {
 import { SessionProvider, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import cmsLogo from "../../public/cms.svg";
+import Link from "next/link";
+import userIcon from "../../public/user-icon.svg"
 
 const teams = [
   { id: 1, name: "Heroicons", href: "#", initial: "H" },
@@ -40,7 +42,7 @@ const teams = [
 ];
 
 const userNavigation = [
-  { name: "Your profile", href: "#" },
+  { name: "Your profile", href: "/dashboard/profile" },
   {
     name: "Sign out",
     href: "#",
@@ -148,13 +150,13 @@ export default function DashboardLayout({ children }) {
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
-                    <a href="/">
+                    <Link href="/">
                       <img
                         alt="Your Company"
                         src={cmsLogo.src}
                         className="h-8 w-auto"
                       />
-                    </a>
+                    </Link>
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -162,7 +164,7 @@ export default function DashboardLayout({ children }) {
                         <ul role="list" className="-mx-2 space-y-1">
                           {navigation.map((item) => (
                             <li key={item.name}>
-                              <a
+                              <Link
                                 href={item.href}
                                 className={classNames(
                                   item.current
@@ -176,14 +178,14 @@ export default function DashboardLayout({ children }) {
                                   className="size-6 shrink-0"
                                 />
                                 {item.name}
-                              </a>
+                              </Link>
                             </li>
                           ))}
                         </ul>
                       </li>
 
                       <li className="mt-auto">
-                        <a
+                        <Link
                           href="#"
                           className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-400 hover:bg-gray-800 hover:text-white"
                         >
@@ -192,7 +194,7 @@ export default function DashboardLayout({ children }) {
                             className="size-6 shrink-0"
                           />
                           Settings
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </nav>
@@ -206,13 +208,13 @@ export default function DashboardLayout({ children }) {
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
               <div className="flex h-16 shrink-0 items-center">
-              <a href="/">
+              <Link href="/">
                   <img
                     alt="Your Company"
                     src={cmsLogo.src}
                     className="h-8 w-auto"
                   />
-                </a>
+                </Link>
               </div>
               <nav className="flex flex-1 flex-col">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -220,7 +222,7 @@ export default function DashboardLayout({ children }) {
                     <ul role="list" className="-mx-2 space-y-1">
                       {navigation.map((item) => (
                         <li key={item.name}>
-                          <a
+                          <Link
                             href={item.href}
                             className={classNames(
                               item.current
@@ -234,14 +236,14 @@ export default function DashboardLayout({ children }) {
                               className="size-6 shrink-0"
                             />
                             {item.name}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
                   </li>
 
                   <li className="mt-auto">
-                    <a
+                    <Link
                       href="#"
                       className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-400 hover:bg-gray-800 hover:text-white"
                     >
@@ -250,7 +252,7 @@ export default function DashboardLayout({ children }) {
                         className="size-6 shrink-0"
                       />
                       Settings
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -309,17 +311,17 @@ export default function DashboardLayout({ children }) {
 
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative">
-                    <MenuButton className="-m-1.5 flex items-center p-1.5">
+                    <MenuButton className="cursor-pointer -m-1.5 flex items-center p-1.5">
                       <span className="sr-only">Open user menu</span>
                       <img
                         alt=""
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={userIcon.src}
                         className="size-8 rounded-full bg-gray-50"
                       />
                       <span className="hidden lg:flex lg:items-center">
                         <span
                           aria-hidden="true"
-                          className="ml-4 text-sm/6 font-semibold text-gray-900"
+                          className="cursor-pointer ml-4 text-sm/6 font-semibold text-gray-900"
                         >
                           <SessionUserDisplay />
                         </span>
@@ -335,13 +337,13 @@ export default function DashboardLayout({ children }) {
                     >
                       {userNavigation.map((item) => (
                         <MenuItem key={item.name}>
-                          <a
+                          <Link
                             href={item.href}
                             onClick={item.onClick} // Ensure onClick is properly attached
-                            className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
+                            className="cursor-pointer block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         </MenuItem>
                       ))}
                     </MenuItems>

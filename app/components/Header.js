@@ -29,6 +29,7 @@ import {
 } from "@heroicons/react/20/solid";
 import cmsLogo from "../../public/cms.svg";
 import Link from "next/link";
+import Image from "next/image";
 
 const products = [
   {
@@ -55,7 +56,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5 cursor-pointer">
             <span className="sr-only">Compare My Survey</span>
-            <img alt="" src={cmsLogo.src} className="h-8 w-auto" />
+            <Image alt="" src={cmsLogo.src} className="h-8 w-auto" width={60} height={60}/>
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -70,7 +71,7 @@ export default function Header() {
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
+            <PopoverButton className="cursor-pointer flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
               Compare
               <ChevronDownIcon
                 aria-hidden="true"
@@ -95,50 +96,36 @@ export default function Header() {
                       />
                     </div>
                     <div className="flex-auto">
-                      <a
+                      <Link
                         href={item.href}
                         className="block font-semibold text-gray-900"
                       >
                         {item.name}
                         <span className="absolute inset-0" />
-                      </a>
+                      </Link>
                       <p className="mt-1 text-gray-600">{item.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              {/* <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                {callsToAction.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100"
-                  >
-                    <item.icon
-                      aria-hidden="true"
-                      className="size-5 flex-none text-gray-400"
-                    />
-                    {item.name}
-                  </a>
-                ))}
-              </div> */}
+
             </PopoverPanel>
           </Popover>
 
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          <Link href="#" className="text-sm/6 font-semibold text-gray-900">
             Consumers
-          </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          </Link>
+          <Link href="#" className="text-sm/6 font-semibold text-gray-900">
             Articles
-          </a>
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          </Link>
+          <Link href="#" className="text-sm/6 font-semibold text-gray-900">
             Surveyors
-          </a>
+          </Link>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="/login" className="text-sm/6 font-semibold text-gray-900">
+          <Link href="/login" className="text-sm/6 font-semibold text-gray-900">
             Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          </Link>
         </div>
       </nav>
       <Dialog
@@ -151,7 +138,7 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img alt="" src={cmsLogo.svg} className="h-8 w-auto" />
+              <Image alt="" src={cmsLogo.svg} className="h-8 w-auto" width={70} height={60} />
             </Link>
             <button
               type="button"
@@ -186,32 +173,32 @@ export default function Header() {
                     ))}
                   </DisclosurePanel>
                 </Disclosure> */}
-                <a
+                <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Features
-                </a>
-                <a
+                </Link>
+                <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Marketplace
-                </a>
-                <a
+                </Link>
+                <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Company
-                </a>
+                </Link>
               </div>
               <div className="py-6">
-                <a
+                <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Log in
-                </a>
+                </Link>
               </div>
             </div>
           </div>

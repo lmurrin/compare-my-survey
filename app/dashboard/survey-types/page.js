@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import DashboardHeading from "@/app/components/dashboard/DashboardHeading";
+import Link from "next/link";
 
 export default function DashboardSurveyTypes() {
   const [surveyTypes, setSurveyTypes] = useState([]);
@@ -67,9 +68,9 @@ export default function DashboardSurveyTypes() {
                           {surveyType.name}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                          <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                          <Link href="#" className="text-indigo-600 hover:text-indigo-900">
                             Edit<span className="sr-only">, {surveyType.name}</span>
-                          </a>
+                          </Link>
                         </td>
                       </tr>
                     ))}

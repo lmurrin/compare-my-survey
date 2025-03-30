@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import heroImage from "../public/hero-image-house.jpg";
+import Image from "next/image";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -79,6 +80,7 @@ export default function Home() {
             alt=""
             src={heroImage.src}
             className="aspect-[3/2] object-cover lg:aspect-auto lg:size-full"
+            
           />
         </div>
       </div>

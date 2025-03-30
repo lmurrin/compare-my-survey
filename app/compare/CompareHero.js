@@ -1,5 +1,6 @@
 import { LifebuoyIcon, NewspaperIcon, PhoneIcon, CheckIcon } from '@heroicons/react/20/solid'
 import compareHome from "../../public/hero-compare.jpg";
+import Image from 'next/image';
 
 const cards = [
   {

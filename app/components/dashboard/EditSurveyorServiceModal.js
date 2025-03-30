@@ -5,6 +5,7 @@ import { Dialog } from "@headlessui/react";
 import { Switch } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function EditSurveyorServiceModal({ isOpen, onClose, serviceData }) {
   const router = useRouter();
@@ -96,14 +97,14 @@ export default function EditSurveyorServiceModal({ isOpen, onClose, serviceData 
                   ))}
                 </select>
                 {formData.locationBasketId && (
-                  <a
+                  <Link
                     href={`/dashboard/areas/edit/${formData.locationBasketId}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-indigo-600 hover:underline"
                   >
                     Edit areas
-                  </a>
+                  </Link>
                 )}
               </div>
             </div>
