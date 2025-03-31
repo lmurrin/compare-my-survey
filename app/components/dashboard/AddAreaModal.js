@@ -140,7 +140,7 @@ export default function AddAreaModal(props) {
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="text-lg font-bold leading-6 text-gray-900"
                 >
                   Add New Area
                 </Dialog.Title>
@@ -159,6 +159,7 @@ export default function AddAreaModal(props) {
                       name="areaName"
                       value={areaName}
                       onChange={handleAreaNameChange}
+                      placeholder="e.g. 'Local Area'"
                       required
                       className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />

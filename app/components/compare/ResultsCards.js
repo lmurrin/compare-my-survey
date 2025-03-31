@@ -37,35 +37,39 @@ export default function ResultsCards({ surveyors }) {
             <div className="flex w-full items-center justify-between space-x-6 p-6">
               <div className="flex-1 truncate">
                 <div className="flex items-center justify-between space-x-3">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                      {surveyor.imageUrl && (
-                        <Image
-                          alt=""
-                          src={surveyor.imageUrl}
-                          className="size-10 shrink-0 rounded-full bg-gray-300"
-                        />
-                      )}
-                      <h3 className="truncate text-lg font-bold text-gray-900">
-                        {surveyor.name}
-                      </h3>
-                      <span className="inline-flex shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        {surveyor.role}
-                      </span>
-                    </div>
-                   
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-start sm:items-center gap-2">
+                    {surveyor.imageUrl && (
+                      <Image
+                        alt=""
+                        src={surveyor.imageUrl}
+                        className="size-10 shrink-0 rounded-full bg-gray-300"
+                      />
+                    )}
+                    <h3 className="truncate text-lg font-bold text-gray-900">
+                      {surveyor.name}
+                    </h3>
+                    {/* <span className="inline-flex shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                      {surveyor.role}
+                    </span> */}
                   </div>
-                  <p className="text-2xl font-bold align-middle">
+                </div>
+
+                  <p className="text-right sm:text-left sm:text-lg md:text-2xl font-bold">
+                  <span className="block sm:inline align-middle">
                     £{surveyor.quote.price}
-                    <span className="text-xs font-light align-middle ml-1">
-                      (inc. VAT)
-                    </span>
-                  </p>
+                  </span>
+                  <span className="block sm:inline text-xs font-light sm:ml-1">
+                    (inc. VAT)
+                  </span>
+                </p>
+
                 </div>
                 <StarRating rating={rating} reviews={reviews} />
-                <p className="mt-1 truncate text-sm text-gray-500">
-                  {surveyor.title}
+                <p className="mt-1 text-sm text-gray-500">
+                {surveyor.description}
                 </p>
+                
               </div>
             </div>
             <div>

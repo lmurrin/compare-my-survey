@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import AddSurveyorServiceModal from "@/app/components/dashboard/AddSurveyorServiceModal";
+import EmptyPlaceholder from "@/app/components/EmptyPlaceholder";
 
 export default function DashboardServices() {
   const { data: session, status } = useSession();
@@ -121,12 +122,12 @@ export default function DashboardServices() {
     <>
       <DashboardHeading
         title="Services"
-        description="Add the services you offer to your profile."
+        description="Add and manages the services that you would like to receive leads from."
         showEditButton={false}
         showPublishButton={false}
       />
 
-      <div className="px-0 sm:px-6 lg:px-8">
+{services.length ? <div className="px-0 sm:px-6 lg:px-8">
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <button
@@ -193,7 +194,13 @@ export default function DashboardServices() {
             </div>
           </div>
         </div>
-      </div>
+      </div> : <EmptyPlaceholder
+              title="No services yet"
+              description="Add a service and assign an area to start receiving leads."
+              buttonText="Add Service"
+              onClick={() => setIsModalOpen(true)}
+            /> }
+      
       <AddSurveyorServiceModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

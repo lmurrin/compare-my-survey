@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import AddAreaModal from "@/app/components/dashboard/AddAreaModal";
 import { useRouter } from "next/navigation";
+import EmptyPlaceholder from "@/app/components/EmptyPlaceholder";
 
 export default function DashboardAreas() {
   const { data: session, status } = useSession();
@@ -62,12 +63,12 @@ const handleAddArea = async (newAreaId) => {
     <>
       <DashboardHeading
         title="Areas"
-        description="Create areas to receive leads from."
+        description="Areas are groups of postcodes where you'd like to receive leads. By assigning an area to a service, you'll begin receiving leads for that service from all postcodes within the selected area."
         showEditButton={false}
         showPublishButton={false}
       />
 
-      <div className="px-0 sm:px-6 lg:px-8">
+{locationBaskets.length ? <div className="px-0 sm:px-6 lg:px-8">
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <button
@@ -145,9 +146,16 @@ const handleAddArea = async (newAreaId) => {
                 </table>
               )}
             </div>
+            
           </div>
         </div>
-      </div>
+      </div> : <EmptyPlaceholder
+              title="No areas yet"
+              description="Create an area to asign to your services."
+              buttonText="Add Area"
+              onClick={() => setIsModalOpen(true)}
+            />}
+      
       {/* AddAreasModal */}
       <AddAreaModal
   isOpen={isModalOpen}

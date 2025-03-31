@@ -448,7 +448,8 @@ export default function CompareClient() {
                       .sort((a, b) => a.applicableQuote.price - b.applicableQuote.price)
                       .map((service) => ({
                         name: service.surveyor.companyName,
-                        title: `Survey Type: ${service.surveyType} · Description: ${service.surveyor.description}`,
+                        surveyType: service.surveyType,
+                        description: service.surveyor.description,
                         role: "Surveyor",
                         email: service.surveyor.email,
                         telephone: service.surveyor.phone,

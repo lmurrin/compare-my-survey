@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import Link from "next/link";
 
 export default function AddSurveyorServiceModal({
   isOpen,
@@ -49,10 +50,16 @@ export default function AddSurveyorServiceModal({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="text-lg font-bold leading-6 text-gray-900"
                 >
                   Add New Surveyor Service
                 </Dialog.Title>
+
+                {locationBaskets.length === 0 && (
+                        <p className="text-sm pt-4">
+                          <strong>Note: </strong>You must <Link href="/dashboard/areas"><span className="text-indigo-600 font-semibold">create an area</span></Link> before you can add a service.
+                        </p>
+                      )}
 
                 <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                   <div>
@@ -79,6 +86,7 @@ export default function AddSurveyorServiceModal({
                         </option>
                       ))}
                     </select>
+                    
                   </div>
 
                   <div>
@@ -105,6 +113,8 @@ export default function AddSurveyorServiceModal({
                         </option>
                       ))}
                     </select>
+                    
+
                   </div>
 
                   <div className="mt-6 flex justify-end space-x-3">

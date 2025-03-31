@@ -277,7 +277,8 @@ export default function DashboardLayout({ children }) {
               />
 
               <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                <form
+                <div className="grid flex-1 grid-cols-1">
+                {/* <form
                   action="#"
                   method="GET"
                   className="grid flex-1 grid-cols-1"
@@ -293,7 +294,8 @@ export default function DashboardLayout({ children }) {
                     aria-hidden="true"
                     className="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"
                   />
-                </form>
+                </form> */}
+                </div>
                 <div className="flex items-center gap-x-4 lg:gap-x-6">
                   <button
                     type="button"
