@@ -16,7 +16,7 @@ Compare My Survey is a modern web application that helps users compare quotes fr
 
 ![Compare My Survey Screenshot](https://laurencemurrin.co.uk/assets/cms-screenshot-home.jpg)
 
-![Surveyor Profile Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-dashboard1.jpg)
+![Surveyor Profile Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-dashboard.jpg)
 
 ![Create Area - Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-areas.jpg)
 
@@ -35,6 +35,7 @@ Compare My Survey is a modern web application that helps users compare quotes fr
 - **NextAuth** for authentication
 - **Headless UI** for modals and form elements
 - **Heroicons** for clean SVG icons
+- **Stapi CMS** for content management
 
 ---
 
@@ -43,7 +44,7 @@ Compare My Survey is a modern web application that helps users compare quotes fr
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/compare-my-survey.git
+git clone https://github.com/lmurrin/compare-my-survey.git
 cd compare-my-survey
 ```
 
