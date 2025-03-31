@@ -14,13 +14,13 @@ Compare My Survey is a modern web application that helps users compare quotes fr
 
 ## Preview
 
-![Compare My Survey Screenshot](https://compare-my-survey-aa825.ondigitalocean.app/compare-screenshot.jpg)
+![Compare My Survey Screenshot](https://laurencemurrin.co.uk/assets/cms-screenshot-home.jpg)
 
-![Surveyor Profile Dashboard](https://compare-my-survey-aa825.ondigitalocean.app/screenshot-profile.jpg)
+![Surveyor Profile Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-dashboard1.jpg)
 
-![Create Area - Dashboard](https://compare-my-survey-aa825.ondigitalocean.app/screenshot-areas.jpg)
+![Create Area - Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-areas.jpg)
 
-<a href="https://compare-my-survey-aa825.ondigitalocean.app/" target="_blank">
+<a href="https://demo.comparemysurvey.com/" target="_blank">
   View live demo
 </a>
 
