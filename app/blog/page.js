@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import cmsLogo from '../../public/cms.svg'
 
 export default function BlogPage() {
   const [posts, setPosts] = useState([]);
@@ -17,28 +18,39 @@ export default function BlogPage() {
         if (!Array.isArray(data.data)) throw new Error("Invalid data format");
   
         const formattedPosts = data.data.map((article) => {
-          const coverUrl = article.cover?.formats?.medium?.url || article.cover?.url;
-  
-          return {
-            id: article.id,
-            title: article.title,
-            description: article.description,
-            imageUrl: coverUrl
-              ? `http://localhost:1337${coverUrl}`
-              : "https://via.placeholder.com/800x400?text=No+Image",
-            href: `/blog/${article.slug}`,
-            date: new Date(article.createdAt).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            }),
-            datetime: article.createdAt,
-            author: {
-              name: article.author?.name || "Unknown Author",
-              imageUrl: "https://via.placeholder.com/50",
-            },
-          };
-        });
+            const formats = article.cover?.formats;
+            const directUrl = article.cover?.url;
+          
+            const imageUrl =
+              formats?.medium?.url ||
+              formats?.large?.url ||
+              formats?.small?.url ||
+              directUrl ||
+              null;
+          
+            return {
+              id: article.id,
+              title: article.title,
+              description: article.description,
+              imageUrl: imageUrl
+                ? imageUrl.startsWith('http')
+                  ? imageUrl
+                  : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${imageUrl}`
+                : "https://via.placeholder.com/800x400?text=No+Image",
+              href: `/blog/${article.slug}`,
+              date: new Date(article.createdAt).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }),
+              datetime: article.createdAt,
+              author: {
+                name: article.author?.name || "Unknown Author",
+                imageUrl: "https://via.placeholder.com/50",
+              },
+            };
+          });
+          
   
         setPosts(formattedPosts);
       } catch (error) {
@@ -72,7 +84,8 @@ export default function BlogPage() {
                 alt={post.title}
                 src={post.imageUrl}
                 className="absolute inset-0 -z-10 size-full object-cover"
-              />
+                />
+
               <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40" />
               <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
 
@@ -87,14 +100,14 @@ export default function BlogPage() {
                   >
                     <circle r={1} cx={1} cy={1} />
                   </svg>
-                  {/* <div className="flex gap-x-2.5">
+                  <div className="flex gap-x-2.5">
                     <img
                       alt=""
-                      src={post.author.imageUrl}
-                      className="size-6 flex-none rounded-full bg-white/10"
+                      src={cmsLogo.src}
+                      className="size-6 flex-none rounded-full bg-white p-1"
                     />
-                    {post.author.name}
-                  </div> */}
+                    Compare My Survey
+                  </div>
                 </div>
               </div>
               <h3 className="mt-3 text-lg/6 font-semibold text-white">
