@@ -16,6 +16,10 @@ export default function BlogPage() {
   
         const data = await res.json();
         if (!Array.isArray(data.data)) throw new Error("Invalid data format");
+
+        const sortedData = data.data.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
   
         const formattedPosts = data.data.map((article) => {
             const formats = article.cover?.formats;
