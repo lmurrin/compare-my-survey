@@ -44,7 +44,7 @@ export default function Notification() {
                     This site is a work in progress, and some features are not working yet.
                   </p>
                   <p className="mt-1 text-sm text-gray-300">
-                    You can test the comparison feature using most London postcode (e.g. "SW11 1AA"). This will return comparison results.
+                    You can test the comparison feature using most London postcode (e.g. SW11 1AA). This will return comparison results.
                   </p>
                   <p className="mt-1 text-sm text-gray-300">
                     Feel free to create an account and log in to set up your fake surveying business, services, areas, and quotes.
