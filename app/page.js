@@ -42,9 +42,9 @@ export default function Home() {
                   Enter a postcode below to quickly find and compare quotes from
                   reputable local surveyors.
                 </p>
-                <div className="mt-10 flex items-center gap-x-6">
+                <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-x-6">
                   <form onSubmit={handleSubmit} className="mt-2 max-w-md">
-                    <div className="flex gap-x-4">
+                  <div className="flex flex-col sm:flex-row sm:gap-x-4 gap-4">
                       <label htmlFor="email-address" className="sr-only">
                         Postcode
                       </label>
@@ -55,7 +55,7 @@ export default function Home() {
                         required
                         placeholder="Enter a postcode to start"
                         autoComplete="location"
-                        className="text-lg lg:min-w-100 flex-auto rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 "
+                        className="text-lg lg:min-w-100 font-semibold flex-auto rounded-md bg-white px-3.5 py-2.5 text-indigo-600 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                         value={location}
                         onChange={(e) => setLocation(e.target.value.toUpperCase())}
 
@@ -63,7 +63,7 @@ export default function Home() {
                       
                       <button
                         type="submit"
-                        className="cursor-pointer flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="cursor-pointer flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Compare Now
                       </button>

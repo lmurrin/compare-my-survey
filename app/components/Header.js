@@ -135,7 +135,7 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <Image alt="" src={cmsLogo.svg} className="h-8 w-auto" width={70} height={60} />
+              <Image alt="" src={cmsLogo.src} className="h-8 w-auto" width={60} height={60}/>
             </Link>
             <button
               type="button"
@@ -171,27 +171,27 @@ export default function Header() {
                   </DisclosurePanel>
                 </Disclosure> */}
                 <Link
-                  href="#"
+                  href="/compare"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
-                  Features
+                  Compare
+                </Link>
+                <Link
+                  href="/blog"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                >
+                  Articles
                 </Link>
                 <Link
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
-                  Marketplace
-                </Link>
-                <Link
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Company
+                  Surveyors
                 </Link>
               </div>
               <div className="py-6">
                 <Link
-                  href="#"
+                  href="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Log in

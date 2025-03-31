@@ -23,7 +23,7 @@ export default function Notification() {
   return (
     <div
       aria-live="assertive"
-      className="pointer-events-none fixed inset-0 flex items-end justify-start px-4 py-6 sm:items-start sm:justify-start sm:p-6"
+      className="z-100 pointer-events-none fixed inset-0 flex items-end justify-start px-4 py-6 sm:items-start sm:justify-start sm:p-6"
     >
       <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
         <Transition show={show}>

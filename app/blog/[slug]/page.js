@@ -2,6 +2,7 @@ import { CheckCircleIcon, InformationCircleIcon } from '@heroicons/react/20/soli
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import Breadcrumb from '@/app/components/Breadcrumbs';
+import '../../article.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +12,7 @@ async function getArticle(slug) {
         `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/articles?filters[slug][$eq]=${slug}&populate[cover][populate]=true&populate[blocks][populate]=*`,
         { cache: 'no-store' }
       );
+
   
       if (!res.ok) {
         const errorData = await res.json();
@@ -52,26 +54,24 @@ export default async function ArticlePage({ params }) {
         </h1>
         <p className="mt-6 text-xl/8">{description}</p>
 
-        {cover?.data && (
-          <figure className="mt-10">
-            <img
-              src={`http://localhost:1337${cover.data.attributes.formats?.large?.url || cover.data.attributes.url}`}
-              alt={cover.data.attributes.alternativeText || title}
-              className="aspect-video rounded-xl bg-gray-50 object-cover"
-            />
-            <figcaption className="mt-4 flex gap-x-2 text-sm/6 text-gray-500">
-              <InformationCircleIcon aria-hidden="true" className="mt-0.5 size-5 flex-none text-gray-300" />
-              {cover.data.attributes.caption}
-            </figcaption>
-          </figure>
-        )}
+        {cover && (
+            <figure className="mt-10">
+                <img
+                src={cover.formats?.large?.url || cover.url}
+                alt={cover.alternativeText || title}
+                className="aspect-video rounded-xl bg-gray-50 object-cover"
+                />
+               
+            </figure>
+            )}
 
-        <div className="mt-10 max-w-2xl space-y-8">
+
+        <div className="mt-10 max-w-full space-y-8">
        
           {blocks?.map((block) => {
             switch (block.__component) {
               case 'shared.rich-text':
-                return <div key={block.id} dangerouslySetInnerHTML={{ __html: marked(block.body) }} />;
+                return <div key={block.id} className='article-content' dangerouslySetInnerHTML={{ __html: marked(block.body) }} />;
               case 'shared.quote':
                 return (
                     <>
