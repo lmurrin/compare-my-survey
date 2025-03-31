@@ -68,7 +68,12 @@ const handleAddArea = async (newAreaId) => {
         showPublishButton={false}
       />
 
-{locationBaskets.length ? <div className="px-0 sm:px-6 lg:px-8">
+{loading ? (
+      <div className="text-center text-gray-500 py-12">
+        <div className="animate-spin h-6 w-6 mx-auto mb-2 border-4 border-indigo-600 border-t-transparent rounded-full" />
+        Loading your areas...
+      </div>
+    ) : locationBaskets.length ? (<div className="px-0 sm:px-6 lg:px-8">
         <div className="mt-8 flow-root">
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <button
@@ -149,12 +154,14 @@ const handleAddArea = async (newAreaId) => {
             
           </div>
         </div>
-      </div> : <EmptyPlaceholder
-              title="No areas yet"
-              description="Create an area to asign to your services."
-              buttonText="Add Area"
-              onClick={() => setIsModalOpen(true)}
-            />}
+      </div> ) : (
+      <EmptyPlaceholder
+        title="No areas yet"
+        description="Create an area to assign to your services."
+        buttonText="Add Area"
+        onClick={() => setIsModalOpen(true)}
+      />
+    )}
       
       {/* AddAreasModal */}
       <AddAreaModal
