@@ -8,8 +8,25 @@ import {
   Location,
   Quote
 } from '@/models';
+import ApiKey from '@/models/ApiKey';
 
 export async function GET(req) {
+  // Step 1: Check x-api-key
+  const apiKey = req.headers.get('x-api-key');
+
+  if (!apiKey) {
+    return NextResponse.json({ error: 'API key is required' }, { status: 401 });
+  }
+
+  const keyRecord = await ApiKey.findOne({
+    where: { key: apiKey, isActive: true }
+  });
+
+  if (!keyRecord) {
+    return NextResponse.json({ error: 'Invalid or inactive API key' }, { status: 403 });
+  }
+
+  // Step 2: Process search
   try {
     const { searchParams } = new URL(req.url);
     const surveyType = searchParams.get('surveyType');
@@ -24,74 +41,72 @@ export async function GET(req) {
     }
 
     const services = await SurveyorService.findAll({
-        include: [
-          {
-            model: SurveyType,
-            as: 'survey_type',
-            where: { name: surveyType },
-          },
-          {
-            model: LocationBasket,
-            as: 'location_basket',
-            include: [
-              {
-                model: Location,
-                where: { name: location },
-              },
-            ],
-          },
-          {
-            model: Quote,
-            as: 'quotes',
-            required: false,
-          },
-          {
-            model: Surveyor,
-            as: 'surveyor',
-            attributes: ['id', 'companyName', 'email', 'address', 'phone', 'description'],
-          },
-        ],
-        order: Sequelize.literal('RAND()'),
-        limit: 6,
-      });
-      
+      include: [
+        {
+          model: SurveyType,
+          as: 'survey_type',
+          where: { name: surveyType },
+        },
+        {
+          model: LocationBasket,
+          as: 'location_basket',
+          include: [
+            {
+              model: Location,
+              where: { name: location },
+            },
+          ],
+        },
+        {
+          model: Quote,
+          as: 'quotes',
+          required: false,
+        },
+        {
+          model: Surveyor,
+          as: 'surveyor',
+          attributes: ['id', 'companyName', 'email', 'address', 'phone', 'description'],
+        },
+      ],
+      order: Sequelize.literal('RAND()'),
+      limit: 6,
+    });
 
     if (services.length === 0) {
       return NextResponse.json({ message: 'No surveyor services found' }, { status: 404 });
     }
 
     const formattedServices = services.map(service => {
-        const quotes = service.quotes || [];
-        const applicableQuote = quotes.find(q =>
-          propertyPrice >= parseFloat(q.propertyMinValue) &&
-          propertyPrice <= parseFloat(q.propertyMaxValue)
-        );
-      
-        return {
-          id: service.id,
-          surveyType: service.survey_type?.name ?? null,
-          locationBasket: service.location_basket?.name ?? null,
-          applicableQuote: applicableQuote
-            ? {
-                id: applicableQuote.id,
-                price: applicableQuote.price,
-                propertyMinValue: applicableQuote.propertyMinValue,
-                propertyMaxValue: applicableQuote.propertyMaxValue,
-              }
-            : null,
-          surveyor: service.surveyor
-            ? {
-                id: service.surveyor.id,
-                companyName: service.surveyor.companyName,
-                email: service.surveyor.email,
-                address: service.surveyor.address,
-                phone: service.surveyor.phone,
-                description: service.surveyor.description,
-              }
-            : null,
-        };
-      });
-      
+      const quotes = service.quotes || [];
+      const applicableQuote = quotes.find(q =>
+        propertyPrice >= parseFloat(q.propertyMinValue) &&
+        propertyPrice <= parseFloat(q.propertyMaxValue)
+      );
+
+      return {
+        id: service.id,
+        surveyType: service.survey_type?.name ?? null,
+        locationBasket: service.location_basket?.name ?? null,
+        applicableQuote: applicableQuote
+          ? {
+              id: applicableQuote.id,
+              price: applicableQuote.price,
+              propertyMinValue: applicableQuote.propertyMinValue,
+              propertyMaxValue: applicableQuote.propertyMaxValue,
+            }
+          : null,
+        surveyor: service.surveyor
+          ? {
+              id: service.surveyor.id,
+              companyName: service.surveyor.companyName,
+              email: service.surveyor.email,
+              address: service.surveyor.address,
+              phone: service.surveyor.phone,
+              description: service.surveyor.description,
+            }
+          : null,
+      };
+    });
 
     return NextResponse.json({ services: formattedServices }, { status: 200 });
   } catch (error) {

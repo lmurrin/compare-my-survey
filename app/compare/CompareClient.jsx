@@ -127,9 +127,15 @@ export default function CompareClient() {
         location: outwardCode,
         propertyPrice: formData.propertyPrice,
       }).toString();
+
+      console.log("API Key sent:", process.env.NEXT_PUBLIC_SEARCH_API_KEY);
   
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search?${queryParams}`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search?${queryParams}`,{
+          headers: {
+            'x-api-key': process.env.NEXT_PUBLIC_SEARCH_API_KEY,
+          },
+        }
       );
   
       const result = await response.json();
