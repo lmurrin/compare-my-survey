@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import { Surveyor } from '@/models/Surveyor';
+import { Surveyor } from '@/models/';
 
 
 const handler = NextAuth({
@@ -67,7 +67,7 @@ const handler = NextAuth({
       return session;
     },
   },
-  secret: process.env.JWT_SECRET, // Ensure you have a JWT secret
+  secret: process.env.NEXTAUTH_SECRET, 
 });
 
 export { handler as GET, handler as POST };

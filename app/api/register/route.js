@@ -1,8 +1,7 @@
 // app/api/register/route.js
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { Surveyor } from '@/models/Surveyor';
-
+import { Surveyor } from '@/models/';
 
 export async function POST(req) {
   try {
@@ -26,7 +25,7 @@ export async function POST(req) {
     // Create new user
     await Surveyor.create({
       companyName,
-      email,
+      email: email.trim().toLowerCase(),
       phone,
       address,
       description,

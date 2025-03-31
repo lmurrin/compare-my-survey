@@ -4,6 +4,12 @@ import sequelize from '@/lib/db';
 
 
 const Surveyor = sequelize.define('Surveyor', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true,
+  },  
   companyName: {
     type: DataTypes.STRING,
     allowNull: false,
