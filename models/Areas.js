@@ -4,6 +4,11 @@ import sequelize from "@/lib/db";
 const Areas = sequelize.define(
   "Area",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },    
     name: {
       type: DataTypes.STRING,
       allowNull: false,
