@@ -14,9 +14,9 @@ Compare My Survey is a modern web application that helps users compare quotes fr
 
 ## Preview
 
-![Compare My Survey Screenshot](https://laurencemurrin.co.uk/assets/cms-screenshot-home.jpg)
+![Compare My Survey Screenshot](https://laurencemurrin.co.uk/assets/cms-screenshot-compare.jpg)
 
-![Surveyor Profile Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-dashboard.jpg)
+![Surveyor Profile Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-profile.jpg)
 
 ![Create Area - Dashboard](https://laurencemurrin.co.uk/assets/cms-screenshot-areas.jpg)
 
