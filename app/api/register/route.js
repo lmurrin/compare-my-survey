@@ -1,7 +1,8 @@
 // app/api/register/route.js
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { Surveyor } from '@/models/'; // Ensure correct import
+import { Surveyor } from '@/models/Surveyor';
+
 
 export async function POST(req) {
   try {

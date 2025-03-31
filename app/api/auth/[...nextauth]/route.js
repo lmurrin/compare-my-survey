@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import { Surveyor } from '@/models';
+import { Surveyor } from '@/models/Surveyor';
+
 
 const handler = NextAuth({
   providers: [
