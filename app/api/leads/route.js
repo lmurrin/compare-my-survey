@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { Lead, Surveyor, LeadSurveyor, SurveyType, LeadPrice } from '@/models';
 import ApiKey from '@/models/ApiKey';

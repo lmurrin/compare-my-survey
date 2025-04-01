@@ -99,16 +99,6 @@ const leadPriceData = [
   // Add more as needed
 ];
 
-// Insert only if not already present
-for (const priceData of leadPriceData) {
-  const existingPrice = existingLeadPrices.find(
-    (price) => price.surveyTypeId === priceData.surveyTypeId
-  );
-
-  if (!existingPrice) {
-    await LeadPrice.create(priceData);
-  }
-}
 
 
 
