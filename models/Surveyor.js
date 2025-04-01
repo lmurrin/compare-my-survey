@@ -42,6 +42,10 @@ const Surveyor = sequelize.define('Surveyor', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  website: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   
 });
 

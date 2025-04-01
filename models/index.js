@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '@/lib/db'; 
+import { Lead } from './Leads';
+
 
 export const Surveyor = sequelize.define('surveyor', {
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -16,6 +18,10 @@ export const Surveyor = sequelize.define('surveyor', {
   isAdmin: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
+  },
+  website: {
+    type: DataTypes.TEXT,
+    allowNull: true,
   },
 }, { tableName: 'surveyors' });
 
@@ -50,6 +56,21 @@ export const Quote = sequelize.define('quote', {
   price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
 }, { tableName: 'quotes' });
 
+export const LeadSurveyor = sequelize.define('lead_surveyors', {
+  leadId: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
+  surveyorId: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+  },
+}, {
+  tableName: 'lead_surveyors',
+  timestamps: false, 
+});
+
+
 // Associations
 
 SurveyorService.belongsTo(SurveyType, { foreignKey: 'surveyTypeId', as: 'survey_type' });
@@ -65,6 +86,42 @@ Quote.belongsTo(SurveyorService, { foreignKey: 'surveyorServiceId' });
 LocationBasket.belongsTo(Surveyor, { foreignKey: 'surveyorId' });
 LocationBasket.belongsToMany(Location, { through: 'location_basket_locations', timestamps: false });
 Location.belongsToMany(LocationBasket, { through: 'location_basket_locations', timestamps: false });
+
+// lead model already defines surveyTypeId column
+Lead.belongsTo(SurveyType, {
+  foreignKey: 'surveyTypeId',
+  as: 'survey_type',
+});
+
+// many-to-many with surveyors
+Lead.belongsToMany(Surveyor, {
+  through: {
+    model: 'lead_surveyors',
+    timestamps: false,
+  },
+  as: 'surveyors',
+  foreignKey: 'leadId',
+});
+
+Surveyor.belongsToMany(Lead, {
+  through: {
+    model: 'lead_surveyors',
+    timestamps: false,
+  },
+  as: 'leads',
+  foreignKey: 'surveyorId',
+});
+
+
+export {
+  Lead, 
+  Surveyor,
+  SurveyType,
+  Location,
+  LocationBasket,
+  SurveyorService,
+  Quote
+};
 
 
 export default sequelize;

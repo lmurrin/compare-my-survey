@@ -140,6 +140,51 @@ export default function CompareClient() {
   
       const result = await response.json();
       setSearchResults(result.services || []);
+
+      if (result.services && result.services.length > 0) {
+        try {
+          const surveyorIds = result.services
+            .filter(service => service.surveyor?.id)
+            .map(service => service.surveyor.id);
+            
+            const matchedSurveyType = surveyTypes.find(
+              (type) => type.name === formData.surveyType
+            );
+            
+            if (!matchedSurveyType) {
+              throw new Error("Invalid survey type selected");
+            }            
+
+            const leadResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/leads`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": process.env.NEXT_PUBLIC_SEARCH_API_KEY,
+              },
+              body: JSON.stringify({
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                phone: formData.phone,
+                surveyTypeId: matchedSurveyType.id,
+                surveyorIds,
+              }),
+              
+            });
+            
+      
+          const leadData = await leadResponse.json();
+      
+          if (!leadResponse.ok) {
+            throw new Error(leadData.error || 'Failed to create lead');
+          }
+      
+          console.log("Lead successfully created:", leadData.leadId);
+        } catch (error) {
+          console.error("Error creating lead:", error);
+        }
+      }
+      
   
       setTimeout(() => {
         const resultsSection = document.getElementById("search-results");
