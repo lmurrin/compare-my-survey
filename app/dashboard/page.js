@@ -33,28 +33,21 @@ export default function DashboardHome() {
   useEffect(() => {
     const fetchLeads = async () => {
       try {
-        const res = await fetch("/api/leads", {
-          headers: {
-            'x-api-key': process.env.NEXT_PUBLIC_SEARCH_API_KEY,
-          },
-        });
-
-        console.log(session.id)
-
+        const res = await fetch("/api/surveyors/leads");
         const data = await res.json();
         if (res.ok) {
           const sortedLeads = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setLeads(sortedLeads);
-          
         } else {
           console.error("Failed to load leads:", data.error);
-        }        
+        }
       } catch (error) {
         console.error("Error fetching leads:", error);
       } finally {
         setLoading(false);
       }
     };
+    
 
     if (status === "authenticated") {
       fetchLeads();
