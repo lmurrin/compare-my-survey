@@ -307,7 +307,7 @@ export default function DashboardLayout({ children }) {
               <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
               <div className="flex flex-1 items-center">
                 <p className="text-sm text-gray-600">
-                    {balance > 35 ? (
+                    {balance > 15 ? (
                       <>Account Balance: <span className="font-semibold">£{balance}</span></>
                     ) : (
                       <>Account Balance: <span className="font-semibold text-red-600">£{balance}</span></>
