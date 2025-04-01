@@ -82,25 +82,6 @@ export const LeadSurveyor = sequelize.define('lead_surveyors', {
 });
 
 
-// Lead Pricing
-const existingLeadPrices = await LeadPrice.findAll();
-
-const leadPriceData = [
-  {
-    surveyTypeId: 1, // Building Survey
-    basePrice: 4,
-    multiplier: JSON.stringify({ "6": 1.0, "5": 1.18, "4": 1.38, "3": 1.6, "2": 1.8, "1": 2 }),
-  },
-  {
-    surveyTypeId: 2, // Homebuyer Report
-    basePrice: 3,
-    multiplier: JSON.stringify({ "6": 1.0, "5": 1.18, "4": 1.38, "3": 1.6, "2": 1.8, "1": 2 }),
-  },
-  // Add more as needed
-];
-
-
-
 
 
 // Associations
