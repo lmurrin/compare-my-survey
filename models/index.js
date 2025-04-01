@@ -157,12 +157,6 @@ Surveyor.belongsToMany(Lead, {
 
 export {
   Lead, 
-  Surveyor,
-  SurveyType,
-  Location,
-  LocationBasket,
-  SurveyorService,
-  Quote,
   LeadPrice
 };
 
