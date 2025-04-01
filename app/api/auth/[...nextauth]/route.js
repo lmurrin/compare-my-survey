@@ -3,8 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { Surveyor } from '@/models/';
 
-
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -14,13 +13,9 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         const { email, password } = credentials;
-        
-        // Fetch the user by email from the database
         const user = await Surveyor.findOne({ where: { email } });
-        
-        // Check if the user exists and if the password matches
+
         if (user && bcrypt.compareSync(password, user.password)) {
-          // Return user details if password matches
           return {
             id: user.id,
             email: user.email,
@@ -29,19 +24,19 @@ const handler = NextAuth({
             phone: user.phone,
             address: user.address,
             description: user.description,
+            balance: user.balance,
           };
         }
 
-        // Return null for invalid credentials
         return null;
       },
     }),
   ],
   pages: {
-    error: '/auth/error', // Redirect to a custom error page on failure
+    error: '/auth/error',
   },
   session: {
-    strategy: 'jwt', // Use JWT session strategy
+    strategy: 'jwt',
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -53,6 +48,7 @@ const handler = NextAuth({
         token.phone = user.phone;
         token.address = user.address;
         token.description = user.description;
+        token.balance = user.balance;
       }
       return token;
     },
@@ -64,10 +60,13 @@ const handler = NextAuth({
       session.phone = token.phone;
       session.address = token.address;
       session.description = token.description;
+      session.balance = token.balance;
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET, 
-});
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

@@ -1,35 +1,26 @@
 import { NextResponse } from 'next/server';
-import { Lead, Surveyor, SurveyType } from '@/models';
+import { Lead, Surveyor, LeadSurveyor, SurveyType, LeadPrice } from '@/models';
 import ApiKey from '@/models/ApiKey';
+import sequelize from '@/lib/db';
 
 async function isValidApiKey(request) {
   const apiKey = request.headers.get('x-api-key');
   if (!apiKey) return false;
 
   const key = await ApiKey.findOne({
-    where: { key: apiKey, isActive: true }
+    where: { key: apiKey, isActive: true },
   });
 
   return !!key;
 }
 
+// GET: Fetch leads
 export async function GET(req) {
-  // ✅ Step 1: Check API key
-  const apiKey = req.headers.get('x-api-key');
-
-  if (!apiKey) {
-    return NextResponse.json({ error: 'API key is required' }, { status: 401 });
+  const valid = await isValidApiKey(req);
+  if (!valid) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const keyRecord = await ApiKey.findOne({
-    where: { key: apiKey, isActive: true }
-  });
-
-  if (!keyRecord) {
-    return NextResponse.json({ error: 'Invalid or inactive API key' }, { status: 403 });
-  }
-
-  // ✅ Step 2: Fetch leads with relationships
   try {
     const leads = await Lead.findAll({
       include: [
@@ -42,9 +33,10 @@ export async function GET(req) {
           model: Surveyor,
           as: 'surveyors',
           attributes: ['id', 'companyName', 'email', 'website'],
-          through: { attributes: [] }, 
+          through: { attributes: ['quote', 'chargeAmount'] },
         },
       ],
+      order: [['createdAt', 'DESC']],
     });
 
     return NextResponse.json(leads, { status: 200 });
@@ -54,25 +46,60 @@ export async function GET(req) {
   }
 }
 
-
+// POST: Create lead + associate surveyors with quote
 export async function POST(request) {
-    const valid = await isValidApiKey(request);
-    if (!valid) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-  
-    try {
-      const { firstName, lastName, email, phone, surveyTypeId, surveyorIds } = await request.json();
-  
-      const lead = await Lead.create({ firstName, lastName, email, phone, surveyTypeId });
-  
-      if (Array.isArray(surveyorIds) && surveyorIds.length > 0) {
-        await lead.setSurveyors(surveyorIds);
-      }
-  
-      return NextResponse.json({ message: 'Lead created', leadId: lead.id });
-    } catch (error) {
-      console.error('Error creating lead:', error);
-      return NextResponse.json({ error: 'Failed to create lead' }, { status: 500 });
-    }
+  const valid = await isValidApiKey(request);
+  if (!valid) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  try {
+    const { firstName, lastName, email, phone, surveyTypeId, surveyors } = await request.json();
+
+    if (!surveyTypeId || !Array.isArray(surveyors) || surveyors.length === 0) {
+      return NextResponse.json({ error: 'Missing surveyTypeId or surveyors' }, { status: 400 });
+    }
+
+    // Retrieve dynamic pricing
+    const leadPriceEntry = await LeadPrice.findOne({ where: { surveyTypeId } });
+
+    if (!leadPriceEntry) {
+      return NextResponse.json({ error: 'No pricing config found for this survey type' }, { status: 500 });
+    }
+
+    const numSurveyors = surveyors.length;
+    const multipliers = leadPriceEntry.multiplier;
+
+
+    const multiplier = multipliers[numSurveyors.toString()] ?? 1.0;
+    const chargeAmount = parseFloat(leadPriceEntry.basePrice) * multiplier;
+
+    // Create lead
+    const lead = await Lead.create({ firstName, lastName, email, phone, surveyTypeId });
+
+    // Add entries to join table with quote
+    const leadSurveyorData = surveyors.map((s) => ({
+      leadId: lead.id,
+      surveyorId: s.id,
+      quote: s.quote,
+      chargeAmount,
+    }));
+
+    await LeadSurveyor.bulkCreate(leadSurveyorData);
+
+    // Deduct from each surveyor
+    await Promise.all(
+      surveyors.map((s) =>
+        Surveyor.update(
+          { balance: sequelize.literal(`balance - ${chargeAmount}`) },
+          { where: { id: s.id } }
+        )
+      )
+    );
+
+    return NextResponse.json({ message: 'Lead created', leadId: lead.id });
+  } catch (error) {
+    console.error('Error creating lead:', error);
+    return NextResponse.json({ error: 'Failed to create lead' }, { status: 500 });
+  }
+}

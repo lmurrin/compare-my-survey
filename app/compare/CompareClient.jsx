@@ -137,15 +137,21 @@ export default function CompareClient() {
           },
         }
       );
+
   
       const result = await response.json();
+      const numberOfSurveyors = result.services?.length || 0;
       setSearchResults(result.services || []);
 
       if (result.services && result.services.length > 0) {
         try {
-          const surveyorIds = result.services
-            .filter(service => service.surveyor?.id)
-            .map(service => service.surveyor.id);
+          const surveyors = result.services
+            .filter(service => service.surveyor?.id && service.applicableQuote?.price)
+            .map(service => ({
+              id: service.surveyor.id,
+              quote: parseFloat(service.applicableQuote.price),
+            }));
+
             
             const matchedSurveyType = surveyTypes.find(
               (type) => type.name === formData.surveyType
@@ -167,7 +173,11 @@ export default function CompareClient() {
                 email: formData.email,
                 phone: formData.phone,
                 surveyTypeId: matchedSurveyType.id,
-                surveyorIds,
+                surveyors: result.services.map((s) => ({
+                  id: s.surveyor.id,
+                  quote: s.applicableQuote?.price,
+                })),
+                numberOfSurveyors,
               }),
               
             });
@@ -176,6 +186,7 @@ export default function CompareClient() {
           const leadData = await leadResponse.json();
       
           if (!leadResponse.ok) {
+            console.error('Lead API error response:', leadData);
             throw new Error(leadData.error || 'Failed to create lead');
           }
       

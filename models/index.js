@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '@/lib/db'; 
 import { Lead } from './Leads';
+import LeadPrice from './LeadPrice';
+
 
 
 export const Surveyor = sequelize.define('surveyor', {
@@ -56,6 +58,7 @@ export const Quote = sequelize.define('quote', {
   price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
 }, { tableName: 'quotes' });
 
+
 export const LeadSurveyor = sequelize.define('lead_surveyors', {
   leadId: {
     type: DataTypes.INTEGER,
@@ -65,10 +68,49 @@ export const LeadSurveyor = sequelize.define('lead_surveyors', {
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
+  quote: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+  },
+  chargeAmount: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+  },
 }, {
   tableName: 'lead_surveyors',
-  timestamps: false, 
+  timestamps: true,
 });
+
+
+// Lead Pricing
+const existingLeadPrices = await LeadPrice.findAll();
+
+const leadPriceData = [
+  {
+    surveyTypeId: 1, // Building Survey
+    basePrice: 4,
+    multiplier: JSON.stringify({ "6": 1.0, "5": 1.18, "4": 1.38, "3": 1.6, "2": 1.8, "1": 2 }),
+  },
+  {
+    surveyTypeId: 2, // Homebuyer Report
+    basePrice: 3,
+    multiplier: JSON.stringify({ "6": 1.0, "5": 1.18, "4": 1.38, "3": 1.6, "2": 1.8, "1": 2 }),
+  },
+  // Add more as needed
+];
+
+// Insert only if not already present
+for (const priceData of leadPriceData) {
+  const existingPrice = existingLeadPrices.find(
+    (price) => price.surveyTypeId === priceData.surveyTypeId
+  );
+
+  if (!existingPrice) {
+    await LeadPrice.create(priceData);
+  }
+}
+
+
 
 
 // Associations
@@ -120,7 +162,8 @@ export {
   Location,
   LocationBasket,
   SurveyorService,
-  Quote
+  Quote,
+  LeadPrice
 };
 
 

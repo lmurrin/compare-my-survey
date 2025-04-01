@@ -61,8 +61,8 @@ function classNames(...classes) {
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data: session } = useSession();
-  const router = useRouter(); // Use router for programmatic navigation
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   const baseNavigation = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
@@ -83,6 +83,9 @@ export default function DashboardLayout({ children }) {
   ];
 
   const [navigation, setNavigation] = useState(baseNavigation);
+  const [loading, setLoading] = useState(true);
+  const [balance, setBalance] = useState(null);
+  const [error, setError] = useState('');
 
   // Update navigation based on user role
   useEffect(() => {
@@ -104,6 +107,31 @@ export default function DashboardLayout({ children }) {
       setNavigation(updatedNavigation);
     }
   }, [session]);
+
+  
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const res = await fetch("/api/balance");
+        const data = await res.json();
+  
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to fetch balance");
+        }
+  
+        setBalance(data.balance);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    if (status === "authenticated") {
+      fetchBalance();
+    }
+  }, [status]);
 
   return (
     <>
@@ -277,7 +305,15 @@ export default function DashboardLayout({ children }) {
               />
 
               <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                <div className="grid flex-1 grid-cols-1">
+              <div className="flex flex-1 items-center">
+                <p className="text-sm text-gray-600">
+                    {balance > 35 ? (
+                      <>Account Balance: <span className="font-semibold">£{balance}</span></>
+                    ) : (
+                      <>Account Balance: <span className="font-semibold text-red-600">£{balance}</span></>
+                    )} <Link href="/billing" className="border p-2 rounded-lg border-indigo-400 hover:bg-indigo-50 text-indigo-600 hover:text-indigo-700 ms-2 font-semibold">Top up</Link>
+                </p>
+
                 {/* <form
                   action="#"
                   method="GET"
