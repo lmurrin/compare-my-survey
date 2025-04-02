@@ -102,7 +102,9 @@ export default function DashboardHome() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                 {paginatedLeads.map((lead) => {
-                  const fullName = `${lead.firstName} ${lead.lastName}`;
+                  const lastNameDisplay = lead.lastName ?? "";
+                  const fullName = `${lead.firstName} ${lastNameDisplay}`;
+                  
                   const surveyType = lead.survey_type?.name || "—";
 
                   const surveyorRecord = lead.surveyors?.find(
@@ -121,8 +123,21 @@ export default function DashboardHome() {
                   return (
                     <tr key={`${lead.id}-${lead.email}`}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{fullName}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-indigo-600">{lead.phone}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-indigo-600">{lead.email}</td>
+                      <td
+                          className={`whitespace-nowrap px-3 py-4 text-sm ${
+                            lead.phone ? "text-indigo-600" : "text-gray-400"
+                          }`}
+                        >
+                          {lead.phone ?? "—"}
+                        </td>
+                        <td
+                          className={`whitespace-nowrap px-3 py-4 text-sm ${
+                            lead.email ? "text-indigo-600" : "text-gray-400"
+                          }`}
+                        >
+                          {lead.email ?? "—"}
+                        </td>
+
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{surveyType}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{yourQuote}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{yourCharge}</td>

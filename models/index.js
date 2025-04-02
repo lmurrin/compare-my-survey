@@ -1,11 +1,10 @@
 import {
   DataTypes
 } from 'sequelize';
-import sequelize from '@/lib/db';
-import {
-  Lead
-} from './Leads';
-import LeadPrice from './LeadPrice';
+import sequelize from '../lib/db.js';
+
+import { Lead } from './Leads.js';
+import LeadPrice from './LeadPrice.js';
 
 
 

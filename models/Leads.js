@@ -1,6 +1,6 @@
 
 import { DataTypes } from 'sequelize';
-import sequelize from '@/lib/db';
+import sequelize from '../lib/db.js';
 
 // Lead model
 export const Lead = sequelize.define('lead', {
@@ -15,15 +15,15 @@ export const Lead = sequelize.define('lead', {
   },
   lastName: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   phone: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   surveyTypeId: {
     type: DataTypes.INTEGER,

@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '@/lib/db';
+import sequelize from '../lib/db.js';
 
 const LeadPrice = sequelize.define('lead_price', {
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
