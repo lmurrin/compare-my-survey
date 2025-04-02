@@ -4,12 +4,12 @@ import {
     NextResponse
 } from 'next/server';
 import {
-    Lead,
     Surveyor,
     LeadSurveyor,
     SurveyType,
     LeadPrice
 } from '@/models';
+import { Lead } from '@/models';
 import ApiKey from '@/models/ApiKey';
 import sequelize from '@/lib/db';
 
