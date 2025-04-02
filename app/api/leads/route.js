@@ -9,7 +9,7 @@ import {
     SurveyType,
     LeadPrice
 } from '@/models';
-import { Lead } from '@/models';
+import { Lead } from '@/models/Leads';
 import ApiKey from '@/models/ApiKey';
 import sequelize from '@/lib/db';
 

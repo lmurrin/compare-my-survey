@@ -8,7 +8,7 @@ import LeadPrice from './LeadPrice.js';
 
 
 
-export const Surveyor = sequelize.define('surveyor', {
+const Surveyor = sequelize.define('surveyor', {
   id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -54,7 +54,7 @@ export const Surveyor = sequelize.define('surveyor', {
   tableName: 'surveyors'
 });
 
-export const SurveyType = sequelize.define('survey_type', {
+const SurveyType = sequelize.define('survey_type', {
   id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -69,7 +69,7 @@ export const SurveyType = sequelize.define('survey_type', {
   tableName: 'survey_types'
 });
 
-export const Location = sequelize.define('location', {
+const Location = sequelize.define('location', {
   id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -84,7 +84,7 @@ export const Location = sequelize.define('location', {
   tableName: 'locations'
 });
 
-export const LocationBasket = sequelize.define('location_basket', {
+const LocationBasket = sequelize.define('location_basket', {
   id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -102,7 +102,7 @@ export const LocationBasket = sequelize.define('location_basket', {
   tableName: 'location_baskets'
 });
 
-export const SurveyorService = sequelize.define('surveyor_service', {
+const SurveyorService = sequelize.define('surveyor_service', {
   id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -124,7 +124,7 @@ export const SurveyorService = sequelize.define('surveyor_service', {
   tableName: 'surveyor_services'
 });
 
-export const Quote = sequelize.define('quote', {
+const Quote = sequelize.define('quote', {
   id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -151,7 +151,7 @@ export const Quote = sequelize.define('quote', {
 });
 
 
-export const LeadSurveyor = sequelize.define('lead_surveyors', {
+const LeadSurveyor = sequelize.define('lead_surveyors', {
   leadId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -242,7 +242,14 @@ Surveyor.belongsToMany(Lead, {
 
 export {
   Lead,
-  LeadPrice
+  LeadPrice,
+  Surveyor,
+  SurveyType,
+  Location,
+  LocationBasket,
+  SurveyorService,
+  Quote,
+  LeadSurveyor
 };
 
 

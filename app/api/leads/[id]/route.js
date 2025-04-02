@@ -3,8 +3,8 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
-import {Lead} from '@/models/Leads';
-import { Surveyor, SurveyType } from '@/models';
+import { Lead } from '@/models/Leads';
+import { Surveyor, SurveyType } from '@/models/index.js';
 
 export async function GET(req, { params }) {
   const session = await getServerSession(authOptions);

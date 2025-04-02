@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
-import { Lead, Surveyor, SurveyType } from '@/models';
+import { Lead, Surveyor, SurveyType } from '@/models/index.js';
 import { NextResponse } from 'next/server';
 
 export async function GET() {

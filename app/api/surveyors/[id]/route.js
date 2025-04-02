@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { QueryTypes } from 'sequelize';
-import Surveyor from '@/models/Surveyor';
+import { Surveyor } from "@/models/index.js";
 
 
 export async function GET(req, context) {

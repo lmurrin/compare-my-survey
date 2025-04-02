@@ -1,9 +1,10 @@
 export const dynamic = 'force-dynamic';
 
+
 import { getServerSession } from "next-auth";
 import { authOptions } from '@/lib/authOptions';
 import { NextResponse } from "next/server";
-import { Surveyor } from "@/models";
+import { Surveyor } from "@/models/index.js";
 
 export async function GET(req) {
   try {
