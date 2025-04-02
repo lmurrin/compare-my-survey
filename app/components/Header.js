@@ -4,32 +4,24 @@ import { useState } from "react";
 import {
   Dialog,
   DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
   Popover,
   PopoverButton,
   PopoverGroup,
   PopoverPanel,
 } from "@headlessui/react";
 import {
-  ArrowPathIcon,
   Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
   XMarkIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
-  PhoneIcon,
-  PlayCircleIcon,
 } from "@heroicons/react/20/solid";
 import cmsLogo from "../../public/cms.svg";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+
 
 const products = [
   {
@@ -46,6 +38,8 @@ const products = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const isLoggedIn = status === "authenticated";
 
   return (
     <header className="bg-white z-50">
@@ -63,7 +57,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            className="cursor-pointer -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
           >
             <span className="sr-only">Open main menu</span>
             <Bars3Icon aria-hidden="true" className="size-6" />
@@ -120,8 +114,11 @@ export default function Header() {
           </Link>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/login" className="text-sm/6 font-semibold text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
+          <Link
+            href={isLoggedIn ? "/dashboard" : "/login"}
+            className="text-sm/6 font-semibold text-gray-900"
+          >
+            {isLoggedIn ? "Dashboard" : "Log in"} <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
       </nav>
@@ -133,17 +130,17 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <Link href="/" className="-m-1.5 p-1.5">
+            <Link href="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
               <span className="sr-only">Your Company</span>
               <Image alt="" src={cmsLogo.src} className="h-8 w-auto" width={60} height={60}/>
             </Link>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
+              className="cursor-pointer -m-2.5 rounded-md p-2.5 text-gray-700"
             >
               <span className="sr-only">Close menu</span>
-              <XMarkIcon aria-hidden="true" className="size-6" />
+              <XMarkIcon aria-hidden="true" className="cursor-pointer size-6" />
             </button>
           </div>
           <div className="mt-6 flow-root">
@@ -172,29 +169,34 @@ export default function Header() {
                 </Disclosure> */}
                 <Link
                   href="/compare"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Compare
                 </Link>
                 <Link
                   href="/blog"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Articles
                 </Link>
                 <Link
                   href="#"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
                   Surveyors
                 </Link>
               </div>
               <div className="py-6">
+                
                 <Link
-                  href="/login"
+                  href={isLoggedIn ? "/dashboard" : "/login"}
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
                 >
-                  Log in
+                  {isLoggedIn ? "Dashboard" : "Log in"} <span aria-hidden="true">&rarr;</span>
                 </Link>
               </div>
             </div>
