@@ -2,7 +2,6 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -32,11 +31,18 @@ import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
+
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
 import { SessionProvider, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import cmsLogo from "../../public/cms.svg";
 import Link from "next/link";
 import userIcon from "../../public/user-icon.svg"
+
+
+
 
 const teams = [
   { id: 1, name: "Heroicons", href: "#", initial: "H" },
@@ -65,7 +71,9 @@ function classNames(...classes) {
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: session, status } = useSession();
-  const router = useRouter();
+
+  const pathname = usePathname();
+  console.log(pathname)
 
   const baseNavigation = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
@@ -181,7 +189,7 @@ export default function DashboardLayout({ children }) {
                 {/* Sidebar component, swap this element with another sidebar if you like */}
                 <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                   <div className="flex h-16 shrink-0 items-center">
-                    <Link href="/">
+                    <Link href="/" onClick={() => setSidebarOpen(false)}>
                       <img
                         alt="Your Company"
                         src={cmsLogo.src}
@@ -193,25 +201,25 @@ export default function DashboardLayout({ children }) {
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
                       <li>
                         <ul role="list" className="-mx-2 space-y-1">
-                          {navigation.map((item) => (
-                            <li key={item.name}>
-                              <Link
-                                href={item.href}
-                                className={classNames(
-                                  item.current
-                                    ? "bg-gray-800 text-white"
-                                    : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                                  "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
-                                )}
-                              >
-                                <item.icon
-                                  aria-hidden="true"
-                                  className="size-6 shrink-0"
-                                />
-                                {item.name}
-                              </Link>
-                            </li>
-                          ))}
+                        {navigation.map((item) => (
+                          <li key={item.name}>
+                            <Link
+                              href={item.href}
+                              onClick={() => setSidebarOpen(false)}
+                              className={classNames(
+                                pathname.toLowerCase() === `dashboard/${item.href.toLowerCase()}`
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-400 hover:bg-gray-800 hover:text-white",
+                                "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
+                              )}
+                            >
+                              <item.icon aria-hidden="true" className="size-6 shrink-0" />
+                              {item.name}
+                            </Link>
+
+                          </li>
+                        ))}
+
                         </ul>
                       </li>
 
@@ -309,13 +317,28 @@ export default function DashboardLayout({ children }) {
 
               <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
               <div className="flex flex-1 items-center">
-                <p className="text-sm text-gray-600">
-                    {balance > 15 ? (
-                      <>Account Balance: <span className="font-semibold">£{balance}</span></>
-                    ) : (
-                      <>Account Balance: <span className="font-semibold text-red-600">£{balance}</span></>
-                    )} <Link href="/billing" className="border p-2 rounded-lg border-indigo-400 hover:bg-indigo-50 text-indigo-600 hover:text-indigo-700 ms-2 font-semibold">Top up</Link>
-                </p>
+              <p className="text-sm text-gray-600">
+                {balance > 15 ? (
+                  <>
+                    <span className="hidden sm:inline">Account balance:</span>
+                    <span className="inline sm:hidden">Balance:</span>
+                    <span className="font-semibold ms-1">£{balance}</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="hidden sm:inline">Account balance:</span>
+                    <span className="inline sm:hidden">Balance:</span>
+                    <span className="font-semibold text-red-600 ms-1">£{balance}</span>
+                  </>
+                )}
+                <Link
+                  href="/billing"
+                  className="border p-2 rounded-lg border-indigo-400 hover:bg-indigo-50 text-indigo-600 hover:text-indigo-700 ms-2 font-semibold"
+                >
+                  Top up
+                </Link>
+              </p>
+
 
                 {/* <form
                   action="#"

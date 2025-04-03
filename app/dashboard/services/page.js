@@ -137,7 +137,7 @@ export default function DashboardServices() {
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <button
               onClick={() => openModal()}
-              className="mb-4 rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500 cursor-pointer"
+              className="mb-4 rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500 cursor-pointer ms-4 md:ms-0"
             >
               Add New Service
             </button>
