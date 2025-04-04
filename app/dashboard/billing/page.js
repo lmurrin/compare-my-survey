@@ -102,10 +102,6 @@ const pricing = {
       return <p className="text-center mt-10 text-gray-500">Loading your session...</p>;
     }
   
-    if (!session || !session.id) {
-      return <p className="text-center mt-10 text-red-500">You're not logged in.</p>;
-    }
-  
     const surveyorId = session.id;
 
 
