@@ -16,16 +16,19 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@next/font": "^14.2.15",
+    "@stripe/stripe-js": "^7.0.0",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "marked": "^15.0.7",
+    "micro": "^10.0.1",
     "mysql2": "^3.14.0",
     "next": "^15.2.4",
     "next-auth": "^4.24.11",
     "pg-hstore": "^2.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sequelize": "^6.37.6"
+    "sequelize": "^6.37.6",
+    "stripe": "^18.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
