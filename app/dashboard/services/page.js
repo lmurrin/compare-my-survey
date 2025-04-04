@@ -204,7 +204,7 @@ export default function DashboardServices() {
         title="No services yet"
         description="Add a service and assign an area to start receiving leads."
         buttonText="Add Service"
-        onClick={() => setIsModalOpen(true)}
+        onClick={openModal}
       />
     )}
       
